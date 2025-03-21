@@ -60,6 +60,11 @@ dependencies {
     implementation(libs.firebase.analytics)
     implementation (libs.jsoup.jsoup)
     implementation(libs.firebase.firestore.ktx)
+    implementation(libs.firebase.auth)  // Firebase 身份验证
+    implementation(libs.androidx.constraintlayout)
+    implementation (libs.androidx.constraintlayout.compose)
+    implementation(libs.androidx.runtime.livedata)
+    implementation(libs.androidx.material.icons.extended)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

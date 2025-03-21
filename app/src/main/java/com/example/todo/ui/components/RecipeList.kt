@@ -1,4 +1,4 @@
-package com.example.todo.components
+package com.example.todo.ui.components
 
 import android.icu.text.DecimalFormat
 import androidx.compose.foundation.Image
@@ -51,7 +51,7 @@ fun RecipeList(recipes: List<Recipe>,navController: NavController) {
 fun RecipeItem(recipe: Recipe,navController: NavController) {
 
     Card(
-        modifier = Modifier.padding(8.dp),
+        modifier = Modifier.padding(bottom = 16.dp),
     ) {
         Column(
             modifier = Modifier.padding(16.dp)

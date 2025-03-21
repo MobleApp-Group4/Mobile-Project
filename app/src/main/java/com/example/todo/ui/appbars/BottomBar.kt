@@ -1,10 +1,11 @@
-package com.example.todo.appbars
+package com.example.todo.ui.appbars
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.List
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Receipt
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
@@ -23,6 +24,7 @@ fun BottomBar(navController: NavController) {
         //TabItem("Category", Icons.AutoMirrored.Filled.List, route = "favorites"),
         TabItem("Favorite", Icons.Filled.Favorite, route = "favorites"),
         TabItem("Cart", Icons.Filled.ShoppingCart, route = "cart"),
+        TabItem("Order", Icons.Filled.Receipt, route = "orders"),
         TabItem("Profile",Icons.Filled.AccountCircle,route="profile")
     )
 

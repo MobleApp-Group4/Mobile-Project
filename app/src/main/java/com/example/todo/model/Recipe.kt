@@ -1,9 +1,6 @@
 package com.example.todo.model
 
 
-import android.media.Image
-import com.google.gson.annotations.SerializedName
-
 data class RecipesResponse(
     val results: List<Recipe>,
     val number: Int
@@ -29,6 +26,37 @@ data class RecipeDetail(
     var diets: List<String>,
     var extendedIngredients: List<Ingredient>,
 )
+
+data class CartItem(
+    val recipeId: String = "",
+    val title: String = "",
+    val image: String = "",
+    val quantity: Long = 0
+)
+
+data class Order(
+    val orderId: String = "",
+    val userId: String = "",
+    val status: String = "",
+    val createdAt: String = "",
+    val address: String = "",
+    val phoneNumber: String = "",
+    val orderItems: List<CartItem> = emptyList()
+)
+
+data class User(
+    val userId: String = "",
+    val email: String = "",
+    val createdAt: String = "",
+    val address: String = "",
+    val name: String = "",
+    val avatar: String = "",
+    val phoneNumber: String = "",
+//    val favorites: List<Recipe> = emptyList(),
+//    val cart: List<CartItem> = emptyList(),
+//    val orders: List<Order> = emptyList()
+)
+
 
 
 

@@ -1,4 +1,4 @@
-package com.example.todo.appbars
+package com.example.todo.ui.appbars
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MoreVert
@@ -22,7 +22,7 @@ fun TopBar(navController: NavController) {
     var expanded by remember { mutableStateOf(false) }
 
     TopAppBar(
-        title = { Text("My App") },
+        title = { Text("Foodie Genie") },
         actions = {
             IconButton(onClick = { expanded = !expanded }) {
                 Icon(Icons.Filled.MoreVert, contentDescription = "More Options")

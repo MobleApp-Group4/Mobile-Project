@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Icon
@@ -22,8 +23,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import com.example.todo.components.FilterChip
-import com.example.todo.components.RecipeList
+import com.example.todo.ui.components.FilterChip
+import com.example.todo.ui.components.RecipeList
 import com.example.todo.viewmodel.RecipesViewModel
 
 @OptIn(ExperimentalLayoutApi::class)
@@ -33,7 +34,7 @@ fun RecipeScreen(
     modifier: Modifier = Modifier,
     recipesViewModel: RecipesViewModel = viewModel()
 ) {
-    val categories = listOf("Vegan","Vegetarian","GlutenFree","Whole30","Primal","DairyFree","Paleo","Pescatarian")
+    val categories = listOf("Vegan","Vegetarian","Pescatarian","Primal","Whole30","DairyFree","Paleo","GlutenFree")
     var selectedCategory by remember { mutableStateOf<String?>(null) }
     var searchWord by remember { mutableStateOf("") }
 
@@ -55,7 +56,7 @@ fun RecipeScreen(
 
 
     // Layout
-    Column(modifier = modifier) {
+    Column(modifier = modifier.padding(16.dp)) {
 
         OutlinedTextField(
             value = searchWord,
@@ -65,7 +66,7 @@ fun RecipeScreen(
             modifier = Modifier.fillMaxWidth()
         )
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(8.dp))
 
         FlowRow(
             modifier = Modifier.fillMaxWidth(),
