@@ -48,7 +48,9 @@ fun FavoriteScreen(
         it.title.contains(searchWord, ignoreCase = true)
     }
 
-    Column(modifier = modifier) {
+    Column(
+        modifier = modifier.padding(16.dp)
+    ) {
 
         OutlinedTextField(
             value = searchWord,

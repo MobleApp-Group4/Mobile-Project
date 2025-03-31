@@ -47,6 +47,8 @@ data class Order(
 data class User(
     val userId: String = "",
     val email: String = "",
+    val gender: String = "",
+    val birthday: String = "",
     val createdAt: String = "",
     val address: String = "",
     val name: String = "",

@@ -1,7 +1,11 @@
 package com.example.todo.viewmodel
 
+import android.net.Uri
 import android.util.Log
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -18,6 +22,7 @@ import kotlinx.coroutines.launch
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.storage.FirebaseStorage
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -32,8 +37,12 @@ class UserViewModel:  ViewModel()  {
         private set
 
     private val auth: FirebaseAuth = FirebaseAuth.getInstance()
-   private val _user = MutableStateFlow<User?>(null) // 存储当前登录用户
-   val user: StateFlow<User?> = _user.asStateFlow()
+    private val _user = MutableStateFlow<User?>(null) // 存储当前登录用户
+    val user: StateFlow<User?> = _user.asStateFlow()
+
+
+    private val _isLoggedIn = MutableStateFlow(false)  // ✅ 用 StateFlow 代替 mutableStateOf
+    val isLoggedIn: StateFlow<Boolean> = _isLoggedIn.asStateFlow()
 
     // Sign up
     fun registerUser(email: String, password: String, onResult: (Boolean, String?) -> Unit) {
@@ -79,15 +88,12 @@ class UserViewModel:  ViewModel()  {
                 if (task.isSuccessful) {
                     val userId = auth.currentUser?.uid
                     if (userId!= null){
-                        loadUserData(userId) { user ->
-                            if (user != null) {
-                                _user.value = user  // ✅ 将用户数据存入 ViewModel
-                                Log.d("loginUser", "✅ _user updated: ${_user.value}")
-                                onResult(true, "Successful to load user data")
-                            } else {
-                                onResult(false, "Failed to load user data")
-                            }
-                        }
+                        loadUserData(userId)
+                        _isLoggedIn.value = true
+                        Log.d("loginUser", "${_isLoggedIn.value}")
+                        onResult(true, null)
+                    }else {
+                        onResult(false, "User ID is null after login")
                     }
                 } else {
                     onResult(false, task.exception?.message)
@@ -95,30 +101,85 @@ class UserViewModel:  ViewModel()  {
             }
     }
 
-    private fun loadUserData(userId: String, onComplete: (User?) -> Unit) {
+     fun loadUserData(userId: String) {
         db.collection("users")
             .document(userId)
             .get()
             .addOnSuccessListener { document ->
                 if (document.exists()) {
                     val user = document.toObject(User::class.java)
+                    _user.value = user
                     Log.d("loadUserData", "$user")
-                    onComplete(user)
                 } else {
-                    onComplete(null)
+                    _user.value = null
+                    Log.e("loadUserData", "No user data")
                 }
             }
             .addOnFailureListener { e ->
+                _user.value = null
                 Log.e("Firestore", "Failed to load user data", e)
-                onComplete(null)
             }
     }
+
+    fun updateUser(updatedUser: User, onResult: (Boolean, String?) -> Unit = { _, _ -> }) {
+        val userId = updatedUser.userId
+        if (userId.isEmpty()) {
+            onResult(false, "User ID is empty")
+            return
+        }
+
+        db.collection("users").document(userId)
+            .set(updatedUser)
+            .addOnSuccessListener {
+                _user.value = updatedUser
+                Log.d("updateUser", "✅ Update successfully: $updatedUser")
+                onResult(true, null)
+            }
+            .addOnFailureListener { e ->
+                Log.e("updateUser", "Fail to update", e)
+                onResult(false, e.message)
+            }
+    }
+
+    fun updateAvatar(userId: String, imageUri: Uri, onResult: (Boolean, String?) -> Unit) {
+        val storageRef = FirebaseStorage.getInstance().reference.child("avatars/$userId.jpg")
+
+        storageRef.putFile(imageUri)
+            .addOnSuccessListener {
+                storageRef.downloadUrl.addOnSuccessListener { downloadUrl ->
+                    db.collection("users").document(userId)
+                        .update("avatar", downloadUrl.toString())
+                        .addOnSuccessListener {
+                            _user.value = _user.value?.copy(avatar = downloadUrl.toString())  // ✅ UI 更新
+                            Log.d("updateAvatar", "✅ 头像上传成功: $downloadUrl")
+                            onResult(true, null)
+                        }
+                        .addOnFailureListener { e ->
+                            Log.e("updateAvatar", "❌ Firestore 更新失败", e)
+                            onResult(false, e.message)
+                        }
+                }
+            }
+            .addOnFailureListener { e ->
+                Log.e("updateAvatar", "❌ 头像上传失败", e)
+                onResult(false, e.message)
+            }
+    }
+
+
 
 
     fun logout() {
         auth.signOut()
+        _isLoggedIn.value = false
+        Log.d("logout", "User logged out, isLoggedIn = ${_isLoggedIn.value}")
     }
 
+    fun getCurrentUserId(): String? {
+        return auth.currentUser?.uid
+    }
+
+    //Favorites
 
     fun isFavorite(userId:String, recipeId: String, onResult: (Boolean) -> Unit) {
         //val userId = _user.value?.userId ?: return

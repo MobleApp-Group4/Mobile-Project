@@ -6,6 +6,7 @@ constraintlayoutComposeVersion = "1.1.1"
 converterGson = "2.9.0"
 firebaseBom = "32.7.3"
 firebaseBomVersion = "33.10.0"
+firebaseStorageVersion = "21.0.1"
 jsoupJsoup = "1.14.3"
 kotlin = "2.0.0"
 coreKtx = "1.15.0"
@@ -21,6 +22,8 @@ retrofit = "2.9.0"
 firebaseFirestoreKtxVersion = "25.1.2"
 constraintlayoutVersion = "2.2.1"
 runtimeLivedataVersion = "1.7.8"
+roomRuntimeAndroidVersion = "2.7.0-rc02"
+firebaseStorageKtxVersion = "21.0.1"
 
 [libraries]
 androidx-constraintlayout-compose = { module = "androidx.constraintlayout:constraintlayout-compose", version.ref = "constraintlayoutComposeVersion" }
@@ -34,6 +37,7 @@ firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
 firebase-auth = { module = "com.google.firebase:firebase-auth" }
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBomVersion" }
 firebase-bom-v3273 = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
+firebase-storage = { module = "com.google.firebase:firebase-storage", version.ref = "firebaseStorageVersion" }
 google-accompanist-flowlayout = { module = "com.google.accompanist:accompanist-flowlayout", version.ref = "accompanistFlowlayoutVersion" }
 jsoup-jsoup = { module = "org.jsoup:jsoup", version.ref = "jsoupJsoup" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -53,6 +57,8 @@ retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit
 firebase-firestore-ktx = { group = "com.google.firebase", name = "firebase-firestore-ktx", version.ref = "firebaseFirestoreKtxVersion" }
 androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayoutVersion" }
 androidx-runtime-livedata = { group = "androidx.compose.runtime", name = "runtime-livedata", version.ref = "runtimeLivedataVersion" }
+androidx-room-runtime-android = { group = "androidx.room", name = "room-runtime-android", version.ref = "roomRuntimeAndroidVersion" }
+firebase-storage-ktx = { group = "com.google.firebase", name = "firebase-storage-ktx", version.ref = "firebaseStorageKtxVersion" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

@@ -146,7 +146,7 @@ fun RecipeDetailScreen(
                                     "Login Please",
                                     Toast.LENGTH_SHORT
                                 ).show()
-                                navController.navigate("home") {
+                                navController.navigate("login") {
                                     popUpTo("login") { inclusive = true } // 清空登录栈
                                 }
                             }
@@ -204,7 +204,7 @@ fun RecipeDetailScreen(
                 }
 
             }
-            if (userId != null) {
+//            if (userId != null) {
                 DetailBottomBar(
                     navController = navController,
                     userId = userId,
@@ -216,7 +216,7 @@ fun RecipeDetailScreen(
                         .fillMaxWidth()
                         .align(Alignment.BottomCenter)
                 )
-            }
+//            }
         }
 
 

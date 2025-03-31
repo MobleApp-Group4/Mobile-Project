@@ -4,14 +4,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.todo.ui.appbars.BottomBar
-import com.example.todo.ui.appbars.DetailBottomBar
 import com.example.todo.ui.appbars.ScreenTopBar
 import com.example.todo.ui.appbars.TopBar
 import com.example.todo.ui.screens.CartScreen
@@ -36,8 +34,8 @@ fun AppScaffold(
     val navController = rememberNavController() // 创建 NavController
     val backStackEntry = navController.currentBackStackEntryAsState()
     val currentRoute = backStackEntry.value?.destination?.route
-    val snackbarHostState = remember { SnackbarHostState() } // 创建 SnackbarHostState
-    val coroutineScope = rememberCoroutineScope() // 用于启动协程
+    val snackbarHostState = remember { SnackbarHostState() } // create SnackbarHostState
+    //val coroutineScope = rememberCoroutineScope()
     Scaffold(
         snackbarHost = { SnackbarHost(snackbarHostState) },
         topBar = {
