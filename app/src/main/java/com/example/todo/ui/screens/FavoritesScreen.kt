@@ -24,6 +24,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.todo.ui.components.RecipeList
+import com.example.todo.viewmodel.RecipesViewModel
 import com.example.todo.viewmodel.UserViewModel
 import com.google.firebase.auth.FirebaseAuth
 
@@ -33,6 +34,7 @@ fun FavoriteScreen(
     navController: NavController,
     modifier: Modifier = Modifier,
     userViewModel: UserViewModel = viewModel(),
+    recipesViewModel: RecipesViewModel = viewModel()
     ) {
     var searchWord by remember { mutableStateOf("") }
     val user = FirebaseAuth.getInstance().currentUser

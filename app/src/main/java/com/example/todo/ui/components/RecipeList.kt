@@ -35,6 +35,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
 import com.example.todo.model.Recipe
+import com.example.todo.viewmodel.RecipesViewModel
 
 @Composable
 fun RecipeList(recipes: List<Recipe>,navController: NavController) {
@@ -49,6 +50,7 @@ fun RecipeList(recipes: List<Recipe>,navController: NavController) {
 
 @Composable
 fun RecipeItem(recipe: Recipe,navController: NavController) {
+
 
     Card(
         modifier = Modifier.padding(bottom = 16.dp),

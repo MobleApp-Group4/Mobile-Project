@@ -2,12 +2,7 @@ package com.example.todo.viewmodel
 
 import android.net.Uri
 import android.util.Log
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.todo.api.RecipesApi
@@ -15,6 +10,10 @@ import com.example.todo.model.CartItem
 import com.example.todo.model.Order
 import com.example.todo.model.Recipe
 import com.example.todo.model.User
+import com.google.android.gms.tasks.Tasks
+import com.google.android.libraries.identity.googleid.GetGoogleIdOption
+import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
+import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential.Companion.TYPE_GOOGLE_ID_TOKEN_CREDENTIAL
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
@@ -22,6 +21,9 @@ import kotlinx.coroutines.launch
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.GoogleAuthProvider
+import com.google.firebase.firestore.Query
+import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.storage.FirebaseStorage
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -179,6 +181,12 @@ class UserViewModel:  ViewModel()  {
         return auth.currentUser?.uid
     }
 
+//    fun signInWithGoogle(idToken: String) {
+//        viewModelScope.launch {
+//            authRepository.signInWithGoogle(idToken)
+//        }
+//    }
+
     //Favorites
 
     fun isFavorite(userId:String, recipeId: String, onResult: (Boolean) -> Unit) {
@@ -280,192 +288,303 @@ class UserViewModel:  ViewModel()  {
         }
     }
 
-    private val _cartItems = MutableLiveData<List<CartItem>>()
-    val cartItems: LiveData<List<CartItem>> = _cartItems
+    private val _cartItems = MutableStateFlow<List<CartItem>>(emptyList())
+    val cartItems: StateFlow<List<CartItem>> = _cartItems.asStateFlow()
 
     fun addToCart( userId:String,recipeId:String,title: String, image: String) {
 //        val userId = _user.value?.userId ?: return
-        val cartRef = db.collection("users")
-            .document(userId)
-            .collection("cart")
-            .document(recipeId)
+        viewModelScope.launch {
+            val cartRef = db.collection("users")
+                .document(userId)
+                .collection("cart")
+                .document(recipeId)
 
-        cartRef.get()
-            .addOnSuccessListener { document ->
-            val currentQuantity = document.getLong("quantity") ?: 0
-            val updatedQuantity = currentQuantity + 1 // 每次点击加 1
-            val cartData = mapOf(
-                "recipeId" to recipeId,
-                "title" to title,
-                "image" to image,
-                "quantity" to updatedQuantity,
-                "timestamp" to FieldValue.serverTimestamp()
-            )
+            cartRef.get()
+                .addOnSuccessListener { document ->
+                    val currentQuantity = document.getLong("quantity") ?: 0
+                    val updatedQuantity = currentQuantity + 1 // 每次点击加 1
+                    val cartData = mapOf(
+                        "recipeId" to recipeId,
+                        "title" to title,
+                        "image" to image,
+                        "quantity" to updatedQuantity,
+                        "timestamp" to FieldValue.serverTimestamp()
+                    )
 
-            // 更新购物车数据
-            cartRef.set(cartData,SetOptions.merge())
-                .addOnSuccessListener {
-                    Log.d("Firestore", "Recipe quantity updated in cart!")
+                    // 更新购物车数据
+                    cartRef.set(cartData,SetOptions.merge())
+                        .addOnSuccessListener {
+                            Log.d("Firestore", "Recipe quantity updated in cart!")
+                        }
+                        .addOnFailureListener { e ->
+                            Log.e("Firestore", "Failed to update recipe quantity", e)
+                        }
+                } .addOnFailureListener { e ->
+                    Log.e("Firestore", "Failed to get cart data", e)
                 }
-                .addOnFailureListener { e ->
-                    Log.e("Firestore", "Failed to update recipe quantity", e)
-                }
-        } .addOnFailureListener { e ->
-            Log.e("Firestore", "Failed to get cart data", e)
         }
     }
 
     // 加载购物车数据
     fun getCartItems(userId:String) {
 //        val userId = _user.value?.userId ?: return
-        db.collection("users")
-            .document(userId)
-            .collection("cart")
-            .get()
-            .addOnSuccessListener { documents ->
-                val items = documents.map { document ->
-                    CartItem(
-                        recipeId = document.getString("recipeId") ?: "",
-                        title = document.getString("title") ?: "",
-                        image = document.getString("image") ?: "",
-                        quantity = document.getLong("quantity")?.toLong() ?: 0
-                    )
+        viewModelScope.launch {
+            db.collection("users")
+                .document(userId)
+                .collection("cart")
+                .get()
+                .addOnSuccessListener { documents ->
+                    val items = documents.map { document ->
+                        CartItem(
+                            recipeId = document.getString("recipeId") ?: "",
+                            title = document.getString("title") ?: "",
+                            image = document.getString("image") ?: "",
+                            quantity = document.getLong("quantity")?.toLong() ?: 0
+                        )
+                    }
+                    _cartItems.value = items  // 更新购物车数据
                 }
-                _cartItems.value = items  // 更新购物车数据
-            }
-            .addOnFailureListener { e ->
-                Log.e("Firestore", "Failed to fetch cart items", e)
-            }
+                .addOnFailureListener { e ->
+                    Log.e("Firestore", "Failed to fetch cart items", e)
+                }
+        }
     }
 
     // 更新商品数量
     fun updateCartItem(userId:String, recipeId: String, newQuantity: Long) {
 //        val userId = _user.value?.userId ?: return
-        val cartRef = db.collection("users")
-            .document(userId)
-            .collection("cart")
-            .document(recipeId)
+        viewModelScope.launch {
+            val cartRef = db.collection("users")
+                .document(userId)
+                .collection("cart")
+                .document(recipeId)
 
-        val cartData = mapOf(
-            "quantity" to newQuantity,
-            "timestamp" to FieldValue.serverTimestamp()
-        )
+            val cartData = mapOf(
+                "quantity" to newQuantity,
+                "timestamp" to FieldValue.serverTimestamp()
+            )
 
-        cartRef.set(cartData, SetOptions.merge())
-            .addOnSuccessListener {
-                Log.d("Firestore", "Recipe quantity updated!")
-                getCartItems(userId)  // 更新购物车
-            }
-            .addOnFailureListener { e ->
-                Log.e("Firestore", "Failed to update recipe quantity", e)
-            }
+            cartRef.set(cartData, SetOptions.merge())
+                .addOnSuccessListener {
+                    Log.d("Firestore", "Recipe quantity updated!")
+                    getCartItems(userId)  // 更新购物车
+                }
+                .addOnFailureListener { e ->
+                    Log.e("Firestore", "Failed to update recipe quantity", e)
+                }
+        }
     }
 
     // 移除商品
     fun removeFromCart(userId:String, recipeId: String) {
 //        val userId = _user.value?.userId ?: return
-        val cartRef = db.collection("users")
-            .document(userId)
-            .collection("cart")
-            .document(recipeId)
+        viewModelScope.launch {
+            val cartRef = db.collection("users")
+                .document(userId)
+                .collection("cart")
+                .document(recipeId)
 
-        cartRef.delete()
-            .addOnSuccessListener {
-                Log.d("Firestore", "Recipe removed from cart!")
-                getCartItems(userId)  // 更新购物车
-            }
-            .addOnFailureListener { e ->
-                Log.e("Firestore", "Failed to remove recipe from cart", e)
-            }
+            cartRef.delete()
+                .addOnSuccessListener {
+                    Log.d("Firestore", "Recipe removed from cart!")
+                    getCartItems(userId)  // 更新购物车
+                }
+                .addOnFailureListener { e ->
+                    Log.e("Firestore", "Failed to remove recipe from cart", e)
+                }
+        }
     }
 
     //Order Data
     fun confirmOrder(userId:String, address: String, phoneNumber: String) {
 //        val userId = _user.value?.userId ?: return
-        // create orderId
-        val orderId = System.currentTimeMillis().toString()
+        viewModelScope.launch {
+            // create orderId
+            val orderId = System.currentTimeMillis().toString()
+            // transfer time format
+            val createdAt = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
+            // get cart
+            val cartRef = db.collection("users").document(userId).collection("cart")
+            cartRef.get()
+                .addOnSuccessListener { documents ->
+                    // 将购物车中的商品转换为 OrderItems
+                    val orderItems = documents.map { document ->
+                        CartItem(
+                            recipeId = document.getString("recipeId") ?: "",
+                            title = document.getString("title") ?: "",
+                            image = document.getString("image") ?: "",
+                            quantity = document.getLong("quantity")?.toLong() ?: 0
+                        )
+                    }
 
-        // 获取当前时间（可以格式化为你想要的格式）
-        val createdAt = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
-
-        // 获取购物车数据
-        val cartRef = db.collection("users").document(userId).collection("cart")
-        cartRef.get()
-            .addOnSuccessListener { documents ->
-                // 将购物车中的商品转换为 OrderItems
-                val orderItems = documents.map { document ->
-                    CartItem(
-                        recipeId = document.getString("recipeId") ?: "",
-                        title = document.getString("title") ?: "",
-                        image = document.getString("image") ?: "",
-                        quantity = document.getLong("quantity")?.toLong() ?: 0
+                    // 创建订单数据
+                    val orderData = Order(
+                        orderId = orderId,
+                        userId = userId,
+                        status = "Pending", // 假设订单默认状态是 "Pending"
+                        createdAt = createdAt,
+                        orderItems = orderItems,
+                        address = address,
+                        phoneNumber = phoneNumber
                     )
+
+                    // 将订单数据保存到 Firestore
+                    db.collection("users")
+                        .document(userId)
+                        .collection("orders")
+                        .document(orderId)
+                        .set(orderData)
+                        .addOnSuccessListener {
+                            Log.d("Firestore", "Order placed successfully!")
+
+                            // 提交成功后清空购物车
+                            clearCart(userId)
+                        }
+                        .addOnFailureListener { e ->
+                            Log.e("Firestore", "Failed to place order", e)
+                        }
                 }
-
-                // 创建订单数据
-                val orderData = Order(
-                    orderId = orderId,
-                    userId = userId,
-                    status = "Pending", // 假设订单默认状态是 "Pending"
-                    createdAt = createdAt,
-                    orderItems = orderItems,
-                    address = address,
-                    phoneNumber = phoneNumber
-                )
-
-                // 将订单数据保存到 Firestore
-                db.collection("users")
-                    .document(userId)
-                    .collection("orders")
-                    .document(orderId)
-                    .set(orderData)
-                    .addOnSuccessListener {
-                        Log.d("Firestore", "Order placed successfully!")
-
-                        // 提交成功后清空购物车
-                        clearCart(userId)
-                    }
-                    .addOnFailureListener { e ->
-                        Log.e("Firestore", "Failed to place order", e)
-                    }
-            }
-            .addOnFailureListener { e ->
-                Log.e("Firestore", "Failed to fetch cart items for order", e)
-            }
+                .addOnFailureListener { e ->
+                    Log.e("Firestore", "Failed to fetch cart items for order", e)
+                }
+        }
     }
 
     private fun clearCart(userId:String) {
 //        val userId = _user.value?.userId ?: return
-        val cartRef = db.collection("users").document(userId).collection("cart")
-        cartRef.get()
-            .addOnSuccessListener { documents ->
-                for (document in documents) {
-                    document.reference.delete()
-                        .addOnSuccessListener {
-                            Log.d("Firestore", "Item removed from cart")
-                        }
-                        .addOnFailureListener { e ->
-                            Log.e("Firestore", "Failed to remove item from cart", e)
-                        }
+        viewModelScope.launch {
+            val cartRef = db.collection("users").document(userId).collection("cart")
+            cartRef.get()
+                .addOnSuccessListener { documents ->
+                    for (document in documents) {
+                        document.reference.delete()
+                            .addOnSuccessListener {
+                                Log.d("Firestore", "Item removed from cart")
+                            }
+                            .addOnFailureListener { e ->
+                                Log.e("Firestore", "Failed to remove item from cart", e)
+                            }
+                    }
                 }
-            }
-            .addOnFailureListener { e ->
-                Log.e("Firestore", "Failed to fetch cart items for clearing", e)
-            }
+                .addOnFailureListener { e ->
+                    Log.e("Firestore", "Failed to fetch cart items for clearing", e)
+                }
+        }
     }
 
-    private val _orders = MutableLiveData<List<Order>>(emptyList())
-    val orders: LiveData<List<Order>> = _orders
+    private val _orders = MutableStateFlow<List<Order>>(emptyList())
+    val orders: StateFlow<List<Order>> = _orders.asStateFlow()
 
     fun fetchOrders(userId:String) {
 //        val userId = _user.value?.userId ?: return
-        db.collection("users").document(userId).collection("orders")
-            .addSnapshotListener { snapshot, _ ->
-                snapshot?.let {
-                    val ordersList = it.documents.mapNotNull { document -> document.toObject(Order::class.java) }
-                    _orders.value = ordersList
+        viewModelScope.launch {
+            db.collection("users").document(userId).collection("orders")
+                .orderBy("createdAt", Query.Direction.DESCENDING)
+                .addSnapshotListener { snapshot, _ ->
+                    snapshot?.let {
+                        val ordersList = it.documents.mapNotNull { document -> document.toObject(Order::class.java) }
+                        _orders.value = ordersList
+                    }
                 }
+        }
+    }
+
+    //manage orders
+    private val _allOrders = MutableStateFlow<List<Order>>(emptyList())
+    val allOrders: StateFlow<List<Order>> = _allOrders.asStateFlow()
+
+    fun getAllOrders() {
+        viewModelScope.launch {
+            db.collection("users")
+                .get()
+                .addOnSuccessListener { userSnapshot ->
+                    val orderTasks = userSnapshot.documents.map { userDoc ->
+                        val userId = userDoc.id
+                        db.collection("users")
+                            .document(userId)
+                            .collection("orders")
+                            .get()
+                    }
+
+                    // 等待所有订单请求完成
+                    Tasks.whenAllSuccess<QuerySnapshot>(orderTasks)
+                        .addOnSuccessListener { snapshots ->
+                            val allOrdersList = snapshots.flatMap { ordersSnapshot ->
+                                ordersSnapshot.documents.mapNotNull { it.toObject(Order::class.java) }
+                            }
+
+                            // 更新 StateFlow
+                            _allOrders.value = allOrdersList
+
+                            // 打印所有订单数量
+                            Log.d("Firestore", "Total orders fetched: ${allOrdersList.size}")
+                        }
+                        .addOnFailureListener { e ->
+                            Log.e("Firestore", "Failed to fetch all orders", e)
+                        }
+                }
+                .addOnFailureListener { e ->
+                    Log.e("Firestore", "Failed to fetch users", e)
+                }
+        }
+    }
+
+    fun updateOrderStatus(userId: String, orderId: String, newStatus: String) {
+        val orderRef = db.collection("users")
+            .document(userId)
+            .collection("orders")
+            .document(orderId)
+
+        orderRef.update("status", newStatus)
+            .addOnSuccessListener {
+                Log.d("Firestore", "Order status updated to $newStatus")
+            }
+            .addOnFailureListener { e ->
+                Log.e("Firestore", "Failed to update order status", e)
             }
     }
+
+
+//
+//    fun signInWithGoogle(onResult: (Boolean, String?) -> Unit) {
+//        val googleIdOption = GetGoogleIdOption.Builder()
+//            .setServerClientId("YOUR_CLIENT_ID") // 替换成你的 Web 客户端 ID
+//            .setFilterByAuthorizedAccounts(false)
+//            .build()
+//
+//        val request = GetCredentialRequest.Builder()
+//            .addCredentialOption(googleIdOption)
+//            .build()
+//
+//        // 获取 Google 认证信息
+//        credentialManager.getCredential(context, request)
+//            .addOnSuccessListener { result ->
+//                val credential = result.credential
+//                if (credential is CustomCredential && credential.type == TYPE_GOOGLE_ID_TOKEN_CREDENTIAL) {
+//                    val googleIdTokenCredential = GoogleIdTokenCredential.createFrom(credential.data)
+//                    firebaseAuthWithGoogle(googleIdTokenCredential.idToken, onResult)
+//                } else {
+//                    onResult(false, "Invalid credential type")
+//                }
+//            }
+//            .addOnFailureListener {
+//                onResult(false, it.localizedMessage)
+//            }
+//    }
+//
+//    // 用 Google Token 登录 Firebase
+//    private fun firebaseAuthWithGoogle(idToken: String, onResult: (Boolean, String?) -> Unit) {
+//        val credential = GoogleAuthProvider.getCredential(idToken, null)
+//        auth.signInWithCredential(credential)
+//            .addOnCompleteListener { task ->
+//                if (task.isSuccessful) {
+//                    val firebaseUser = FirebaseAuth.getInstance().currentUser
+//                    _user.value = firebaseUser?.toUser()  // 更新当前用户
+//                    onResult(true, null)  // 成功回调
+//                } else {
+//                    onResult(false, task.exception?.message)  // 失败回调
+//                }
+//            }
+//    }
 
 }

@@ -59,6 +59,12 @@ dependencies {
     implementation (libs.google.accompanist.flowlayout)
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.analytics)
+    implementation(libs.com.google.firebase.firebase.auth2)
+//    implementation (libs.google.firebase.auth)  // Use the latest version
+//    implementation (libs.play.services.auth)  // Use the latest version
+    implementation(libs.androidx.credentials)
+    implementation(libs.androidx.credentials.play.services.auth)
+    implementation(libs.googleid)
     implementation (libs.jsoup.jsoup)
     implementation(libs.firebase.firestore.ktx)
     implementation(libs.firebase.auth)

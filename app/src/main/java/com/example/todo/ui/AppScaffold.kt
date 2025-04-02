@@ -12,6 +12,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.todo.ui.appbars.BottomBar
 import com.example.todo.ui.appbars.ScreenTopBar
 import com.example.todo.ui.appbars.TopBar
+import com.example.todo.ui.screens.AdminOrderScreen
 import com.example.todo.ui.screens.CartScreen
 import com.example.todo.ui.screens.CheckoutScreen
 import com.example.todo.ui.screens.FavoriteScreen
@@ -48,7 +49,8 @@ fun AppScaffold(
                 "cart" -> ScreenTopBar("Cart",navController)
                 "recipes/{recipeId}" -> ScreenTopBar("Recipes",navController)
                 "checkout" -> ScreenTopBar("Confirm Orders",navController)
-                "orders" -> ScreenTopBar("My Orders",navController)
+                "orders" -> ScreenTopBar("Orders",navController)
+                "all_orders" -> ScreenTopBar("Manage All Orders",navController)
                 else -> TopBar(navController)
             }
         },
@@ -80,6 +82,7 @@ fun AppScaffold(
                 composable(route = "cart") { CartScreen(navController=navController,modifier=modifier) }
                 composable(route = "checkout") { CheckoutScreen(navController=navController,modifier=modifier) }
                 composable(route = "orders") { OrderScreen(navController=navController,modifier=modifier) }
+//                composable(route = "all_orders") { AdminOrderScreen(modifier=modifier) }
                 composable(route = "favorites") { FavoriteScreen(navController,modifier) }
                 composable("recipes/{recipeId}") { backStackEntry ->
                     val recipeId = backStackEntry.arguments?.getString("recipeId")?.toInt() ?: 0

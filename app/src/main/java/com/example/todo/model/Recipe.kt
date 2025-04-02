@@ -1,5 +1,8 @@
 package com.example.todo.model
 
+import com.google.firebase.Timestamp
+import com.google.firebase.auth.FirebaseUser
+
 
 data class RecipesResponse(
     val results: List<Recipe>,
@@ -54,11 +57,31 @@ data class User(
     val name: String = "",
     val avatar: String = "",
     val phoneNumber: String = "",
-//    val favorites: List<Recipe> = emptyList(),
-//    val cart: List<CartItem> = emptyList(),
-//    val orders: List<Order> = emptyList()
 )
 
+fun FirebaseUser.toUser(): User {
+    return User(
+        userId = this.uid,
+        email = this.email ?: "",
+        gender = "", // 你可以从 Firestore 或 Realtime Database 获取更多信息
+        birthday = "",
+        createdAt = "", // 根据需要可以从 Firebase 获取创建时间
+        address = "",
+        name = this.displayName ?: "",
+        avatar = this.photoUrl?.toString() ?: "", // 获取用户的头像 URL
+        phoneNumber = this.phoneNumber ?: ""
+    )
+}
+
+data class Comment(
+    val userId: String = "",
+    val userName: String = "",
+    val rating: Double = 0.0,
+    val content: String = "",
+    val timestamp: Timestamp = Timestamp.now(),
+    val likes: Long = 0,
+
+    )
 
 
 

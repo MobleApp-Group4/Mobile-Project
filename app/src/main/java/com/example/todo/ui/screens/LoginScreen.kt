@@ -43,8 +43,6 @@ import kotlinx.coroutines.launch
 @Composable
 fun LoginScreen(
     modifier: Modifier = Modifier,
-    //snackbarHostState: SnackbarHostState,
-    //coroutineScope: CoroutineScope,
     userViewModel: UserViewModel = viewModel(),
     navController: NavController
 ) {
@@ -52,6 +50,7 @@ fun LoginScreen(
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     val context = LocalContext.current // 获取当前 Context
+
 
 
     Column(
@@ -171,5 +170,20 @@ fun LoginScreen(
                 Text(text = if (isLogin) "Don't have an account? Sign Up" else "Already have an account? Sign In")
             }
         }
+//        Spacer(modifier = Modifier.height(16.dp))
+//
+//        Button(
+//            onClick = { signInWithGoogle(context) }, // 触发 Google 登录
+//            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFDB4437)), // Google 经典红色
+//            modifier = Modifier.fillMaxWidth()
+//        ) {
+//            Icon(
+//                painter = painterResource(id = R.drawable.ic_google_logo), // Google Logo
+//                contentDescription = "Google Sign In",
+//                tint = Color.White
+//            )
+//            Spacer(modifier = Modifier.width(8.dp))
+//            Text(text = "Sign in with Google", color = Color.White)
+//        }
     }
 }
