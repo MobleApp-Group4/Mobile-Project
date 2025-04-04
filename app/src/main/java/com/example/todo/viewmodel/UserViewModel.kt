@@ -14,6 +14,7 @@ import com.google.android.gms.tasks.Tasks
 import com.google.android.libraries.identity.googleid.GetGoogleIdOption
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential.Companion.TYPE_GOOGLE_ID_TOKEN_CREDENTIAL
+import com.google.firebase.Timestamp
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
@@ -28,6 +29,7 @@ import com.google.firebase.storage.FirebaseStorage
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import java.util.Date
 
 
 class UserViewModel:  ViewModel()  {
@@ -401,8 +403,8 @@ class UserViewModel:  ViewModel()  {
         viewModelScope.launch {
             // create orderId
             val orderId = System.currentTimeMillis().toString()
-            // transfer time format
-            val createdAt = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
+            // get time
+            val createdAt = Timestamp.now() // ✅ 使用 Firestore Timestamp
             // get cart
             val cartRef = db.collection("users").document(userId).collection("cart")
             cartRef.get()
@@ -495,39 +497,23 @@ class UserViewModel:  ViewModel()  {
 
     fun getAllOrders() {
         viewModelScope.launch {
-            db.collection("users")
+            db.collectionGroup("orders") // 🔥 直接查询所有 orders
                 .get()
-                .addOnSuccessListener { userSnapshot ->
-                    val orderTasks = userSnapshot.documents.map { userDoc ->
-                        val userId = userDoc.id
-                        db.collection("users")
-                            .document(userId)
-                            .collection("orders")
-                            .get()
-                    }
+                .addOnSuccessListener { snapshot ->
+                    val allOrdersList = snapshot.documents.mapNotNull { it.toObject(Order::class.java) }
 
-                    // 等待所有订单请求完成
-                    Tasks.whenAllSuccess<QuerySnapshot>(orderTasks)
-                        .addOnSuccessListener { snapshots ->
-                            val allOrdersList = snapshots.flatMap { ordersSnapshot ->
-                                ordersSnapshot.documents.mapNotNull { it.toObject(Order::class.java) }
-                            }
+                    // 更新 StateFlow
+                    _allOrders.value = allOrdersList
 
-                            // 更新 StateFlow
-                            _allOrders.value = allOrdersList
-
-                            // 打印所有订单数量
-                            Log.d("Firestore", "Total orders fetched: ${allOrdersList.size}")
-                        }
-                        .addOnFailureListener { e ->
-                            Log.e("Firestore", "Failed to fetch all orders", e)
-                        }
+                    // 打印订单总数
+                    Log.d("Firestore", "Total orders fetched: ${allOrdersList.size}")
                 }
                 .addOnFailureListener { e ->
-                    Log.e("Firestore", "Failed to fetch users", e)
+                    Log.e("Firestore", "Failed to fetch all orders", e)
                 }
         }
     }
+
 
     fun updateOrderStatus(userId: String, orderId: String, newStatus: String) {
         val orderRef = db.collection("users")
@@ -538,10 +524,39 @@ class UserViewModel:  ViewModel()  {
         orderRef.update("status", newStatus)
             .addOnSuccessListener {
                 Log.d("Firestore", "Order status updated to $newStatus")
+                getNewOrders()
             }
             .addOnFailureListener { e ->
                 Log.e("Firestore", "Failed to update order status", e)
             }
+    }
+    private val _newOrders = MutableStateFlow<List<Order>>(emptyList())
+    val newOrders: StateFlow<List<Order>> = _newOrders.asStateFlow()
+
+    private val _newOrderCount = MutableStateFlow(0)
+    val newOrderCount: StateFlow<Int> = _newOrderCount.asStateFlow()
+
+    fun getNewOrders() {
+        val oneDayAgo = Timestamp.now().seconds - (24 * 60 * 60) // 计算 24 小时前的 Unix 时间戳
+
+        viewModelScope.launch {
+            db.collectionGroup("orders") // 🔥 直接查询所有 orders
+                .whereEqualTo("status", "Pending") // 只查询 Pending 状态
+                .whereGreaterThanOrEqualTo("createdAt", Timestamp(oneDayAgo, 0)) // 只获取一天内的订单
+                .get()
+                .addOnSuccessListener { snapshot ->
+                    val newOrdersList = snapshot.documents.mapNotNull { it.toObject(Order::class.java) }
+
+                    // 更新 StateFlow
+                    _newOrders.value = newOrdersList
+
+                    // 打印新订单数量
+                    Log.d("Firestore", "New orders in last 24 hours: ${newOrdersList.size}")
+                }
+                .addOnFailureListener { e ->
+                    Log.e("Firestore", "Failed to fetch new orders", e)
+                }
+        }
     }
 
 

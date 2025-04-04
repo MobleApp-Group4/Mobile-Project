@@ -38,10 +38,10 @@ fun AdminOrderList(
     userViewModel:UserViewModel
 ){
     LazyColumn {
-        items(allOrders) { order ->
+        items(allOrders, key = { it.orderId }) { order ->
             var expanded by remember { mutableStateOf(false) }
             var selectedStatus by remember { mutableStateOf(order.status) }
-            val statusOptions = listOf("Pending","In Progress", "Completed")
+            val statusOptions = listOf("Pending","In Progress", "Completed","Cancelled")
 
             Card(
                 modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp),
