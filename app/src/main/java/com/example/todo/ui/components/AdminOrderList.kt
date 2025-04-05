@@ -1,5 +1,6 @@
 package com.example.todo.ui.components
 
+import android.icu.text.SimpleDateFormat
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -30,6 +31,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.todo.model.Order
 import com.example.todo.viewmodel.UserViewModel
+import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -42,12 +44,14 @@ fun AdminOrderList(
             var expanded by remember { mutableStateOf(false) }
             var selectedStatus by remember { mutableStateOf(order.status) }
             val statusOptions = listOf("Pending","In Progress", "Completed","Cancelled")
-
+            val formattedDate = order.createdAt.toDate().let { date ->
+                SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault()).format(date) // ✅ 格式化日期
+            } ?: "Unknown"
             Card(
                 modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp),
 
                 ) {
-                Column(modifier = Modifier.padding(16.dp)) {
+                Column(modifier = Modifier.padding(8.dp)) {
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         verticalAlignment = Alignment.CenterVertically,
@@ -72,11 +76,13 @@ fun AdminOrderList(
 
 
 
-                    Text(text = "Created At: ${order.createdAt}")
+                    Text(text = "Created At: $formattedDate")
                     Spacer(modifier = Modifier.height(4.dp))
                     order.orderItems.forEach { item ->
                         Text(text = "- ${item.title} x ${item.quantity}")
                     }
+                    Spacer(modifier = Modifier.height(8.dp))
+
                 }
             }
         }

@@ -41,15 +41,25 @@ fun CheckoutScreen(
 
 //    val userInfo by viewModel.userInfo.observeAsState()
     val cartItems by userViewModel.cartItems.collectAsState(emptyList())
+    val userInfo by userViewModel.user.collectAsState()
 
     var address by remember { mutableStateOf("") }
     var phoneNumber by remember { mutableStateOf("") }
+    var note by remember { mutableStateOf("") }
     val user = FirebaseAuth.getInstance().currentUser
     val userId = user?.uid
 
     LaunchedEffect(userId) {
         if (userId != null){
             userViewModel.getCartItems(userId)
+            userViewModel.loadUserData(userId)
+        }
+    }
+
+    LaunchedEffect(userInfo) {
+        userInfo?.let {
+            address = it.address ?: ""
+            phoneNumber = it.phoneNumber ?: ""
         }
     }
 
@@ -75,6 +85,14 @@ fun CheckoutScreen(
         )
 
         Spacer(modifier = Modifier.height(16.dp))
+
+        Text("Note", fontSize = 18.sp, fontWeight = FontWeight.Medium)
+        TextField(
+            value = note,
+            onValueChange = { note = it },
+            modifier = Modifier.fillMaxWidth(),
+            placeholder = { Text("Any additional instructions? ") }
+        )
 
         // 购物车商品列表
         LazyColumn {
@@ -103,7 +121,7 @@ fun CheckoutScreen(
         Button(
             onClick = {
                 if (userId != null){
-                    userViewModel.confirmOrder(userId,address,phoneNumber)
+                    userViewModel.confirmOrder(userId,address,phoneNumber,note)
                 }
                 navController.navigate("orders") // 跳转到订单成功页面
             },

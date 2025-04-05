@@ -45,6 +45,7 @@ data class Order(
     val createdAt: Timestamp = Timestamp.now(), // ✅ 修改为 Firestore Timestamp
     val address: String = "",
     val phoneNumber: String = "",
+    val note: String = "",
     val orderItems: List<CartItem> = emptyList()
 )
 

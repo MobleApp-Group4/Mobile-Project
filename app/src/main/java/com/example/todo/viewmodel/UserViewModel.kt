@@ -398,7 +398,7 @@ class UserViewModel:  ViewModel()  {
     }
 
     //Order Data
-    fun confirmOrder(userId:String, address: String, phoneNumber: String) {
+    fun confirmOrder(userId:String, address: String, phoneNumber: String, note:String) {
 //        val userId = _user.value?.userId ?: return
         viewModelScope.launch {
             // create orderId
@@ -427,7 +427,8 @@ class UserViewModel:  ViewModel()  {
                         createdAt = createdAt,
                         orderItems = orderItems,
                         address = address,
-                        phoneNumber = phoneNumber
+                        phoneNumber = phoneNumber,
+                        note = note
                     )
 
                     // 将订单数据保存到 Firestore
@@ -525,6 +526,8 @@ class UserViewModel:  ViewModel()  {
             .addOnSuccessListener {
                 Log.d("Firestore", "Order status updated to $newStatus")
                 getNewOrders()
+                getAllOrders()
+
             }
             .addOnFailureListener { e ->
                 Log.e("Firestore", "Failed to update order status", e)
