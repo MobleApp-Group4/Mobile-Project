@@ -533,6 +533,20 @@ class UserViewModel:  ViewModel()  {
                 Log.e("Firestore", "Failed to update order status", e)
             }
     }
+
+    fun updateOrderNote(userId: String, orderId: String, note: String) {
+        val orderRef = db.collection("users").document(userId)
+            .collection("orders").document(orderId)
+
+        orderRef.update("note", note)
+            .addOnSuccessListener {
+                Log.d("Firestore", "Note updated successfully")
+                getAllOrders()  // 更新列表
+            }
+            .addOnFailureListener { e ->
+                Log.e("Firestore", "Failed to update note", e)
+            }
+    }
     private val _newOrders = MutableStateFlow<List<Order>>(emptyList())
     val newOrders: StateFlow<List<Order>> = _newOrders.asStateFlow()
 

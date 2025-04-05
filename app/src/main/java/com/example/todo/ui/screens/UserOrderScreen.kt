@@ -57,6 +57,9 @@ fun UserOrderScreen(
                         order.orderItems.forEach { item ->
                             Text(text = "- ${item.title} x ${item.quantity}")
                         }
+                        Spacer(modifier = Modifier.height(4.dp))
+                        Text(text = "Note: ${order.note}")
+
                     }
                 }
             }

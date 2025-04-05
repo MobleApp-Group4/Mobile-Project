@@ -21,6 +21,7 @@ import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -47,6 +48,9 @@ fun AdminOrderList(
             val formattedDate = order.createdAt.toDate().let { date ->
                 SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault()).format(date) // ✅ 格式化日期
             } ?: "Unknown"
+
+            var isEditingNote by remember { mutableStateOf(false) }
+            var noteText by remember { mutableStateOf(order.note ?: "") }
             Card(
                 modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp),
 
@@ -74,12 +78,41 @@ fun AdminOrderList(
                         }
                     }
 
-
-
                     Text(text = "Created At: $formattedDate")
                     Spacer(modifier = Modifier.height(4.dp))
                     order.orderItems.forEach { item ->
                         Text(text = "- ${item.title} x ${item.quantity}")
+                    }
+                    Spacer(modifier = Modifier.height(4.dp))
+                    // Edit Note
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        Text(text = "Note")
+                        TextButton(onClick = {
+                            if (isEditingNote){
+                                userViewModel.updateOrderNote(order.userId, order.orderId, noteText)
+                            }
+                            isEditingNote = !isEditingNote
+                        }) {
+                            Text(text = if (isEditingNote) "Save" else "Edit")
+                        }
+                    }
+
+                    // 备注内容显示或编辑
+                    if (isEditingNote) {
+                        TextField(
+                            value = noteText,
+                            onValueChange = { noteText = it },
+                            modifier = Modifier.fillMaxWidth(),
+                            placeholder = { Text("Enter your note") },
+                            singleLine = false,
+
+                        )
+                    } else {
+                        Text(text = noteText)
                     }
                     Spacer(modifier = Modifier.height(8.dp))
 
