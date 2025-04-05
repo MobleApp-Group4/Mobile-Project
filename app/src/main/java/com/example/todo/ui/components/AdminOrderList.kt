@@ -1,6 +1,7 @@
 package com.example.todo.ui.components
 
 import android.icu.text.SimpleDateFormat
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -11,7 +12,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
@@ -51,6 +51,8 @@ fun AdminOrderList(
 
             var isEditingNote by remember { mutableStateOf(false) }
             var noteText by remember { mutableStateOf(order.note ?: "") }
+            var showDetails by remember { mutableStateOf(false) }
+
             Card(
                 modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp),
 
@@ -84,38 +86,50 @@ fun AdminOrderList(
                         Text(text = "- ${item.title} x ${item.quantity}")
                     }
                     Spacer(modifier = Modifier.height(4.dp))
-                    // Edit Note
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.SpaceBetween
-                    ) {
-                        Text(text = "Note")
-                        TextButton(onClick = {
-                            if (isEditingNote){
-                                userViewModel.updateOrderNote(order.userId, order.orderId, noteText)
+
+                    TextButton(onClick = { showDetails = !showDetails }) {
+                        Text(text = if (showDetails) "Hide Details" else "Show Details")
+                    }
+
+                    AnimatedVisibility(visible = showDetails) {
+                        Column {
+                            Text("Address: ${order.address}")
+                            Text("Phone: ${order.phoneNumber}")
+                            // Edit Note
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.SpaceBetween
+                            ) {
+                                Text(text = "Note")
+                                TextButton(onClick = {
+                                    if (isEditingNote){
+                                        userViewModel.updateOrderNote(order.userId, order.orderId, noteText)
+                                    }
+                                    isEditingNote = !isEditingNote
+                                }) {
+                                    Text(text = if (isEditingNote) "Save" else "Edit")
+                                }
                             }
-                            isEditingNote = !isEditingNote
-                        }) {
-                            Text(text = if (isEditingNote) "Save" else "Edit")
+
+                            // 备注内容显示或编辑
+                            if (isEditingNote) {
+                                OutlinedTextField(
+                                    value = noteText,
+                                    onValueChange = { noteText = it },
+                                    modifier = Modifier.fillMaxWidth(),
+                                    placeholder = { Text("Enter your note") },
+                                    singleLine = false,
+
+                                    )
+                            } else {
+                                Text(text = noteText)
+                                Spacer(modifier = Modifier.height(4.dp))
+                            }
+
+
                         }
                     }
-
-                    // 备注内容显示或编辑
-                    if (isEditingNote) {
-                        TextField(
-                            value = noteText,
-                            onValueChange = { noteText = it },
-                            modifier = Modifier.fillMaxWidth(),
-                            placeholder = { Text("Enter your note") },
-                            singleLine = false,
-
-                        )
-                    } else {
-                        Text(text = noteText)
-                    }
-                    Spacer(modifier = Modifier.height(8.dp))
-
                 }
             }
         }
