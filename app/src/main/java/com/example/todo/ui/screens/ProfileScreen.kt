@@ -114,58 +114,6 @@ fun ProfileScreen(
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     val (avatarRef, nameRef, genderRef, emailRef) = createRefs()
-//                    Box(
-//                        modifier = Modifier
-//                            .size(120.dp)
-//                            .clip(CircleShape)
-//                            .background(Color.Gray)
-//                            .clickable {
-//                                launcher.launch("image/*") }
-//                    ) {
-//                        if (currentUser.avatar.isNotEmpty()) {
-//                            Image(
-//                                painter = rememberAsyncImagePainter(currentUser.avatar),
-//                                contentDescription = "Avatar",
-//                                modifier = Modifier.fillMaxSize(),
-//                                contentScale = ContentScale.Crop
-//                            )
-//                        } else {
-//                            Icon(
-//                                imageVector = Icons.Default.Person,
-//                                contentDescription = "Default Avatar",
-//                                modifier = Modifier.fillMaxSize(),
-//                                tint = Color.White
-//                            )
-//                        }
-//
-//                        Text(text = currentUser.name, fontSize = 20.sp, fontWeight = FontWeight.Bold)
-//                        Text(text = "Email: ${currentUser.email}", fontSize = 16.sp, color = Color.Gray)
-//
-//                        Spacer(modifier = Modifier.height(8.dp))
-//
-//                        val genderSymbol = when (currentUser.gender) {
-//                            "Male" -> "♂️"
-//                            "Female" -> "♀️"
-//                            "Other" -> "⚧️"
-//                            else -> "❓"
-//                        }
-//                        Box(
-//                            modifier = Modifier
-//                                .clip(RoundedCornerShape(12.dp)) // 四角弧形
-//                                .background(Color.Gray) // 背景色
-//                                .padding(horizontal = 8.dp, vertical = 3.dp) // 适当的内边距
-//                        ) {
-//                            Text(
-//                                text = genderSymbol,
-//                                fontSize = 16.sp,
-//                            )
-//                        }
-//                        Spacer(modifier = Modifier.height(16.dp))
-//                        // "Edit"
-//                        Button(onClick = { isEditing = true }) {
-//                            Text("Edit")
-//                        }
-//                    }
                     Box(
                         modifier = Modifier
                             .size(100.dp)
@@ -236,6 +184,7 @@ fun ProfileScreen(
                             top.linkTo(genderRef.bottom, margin = 4.dp)
                         }
                     )
+
 
                 }
                 Spacer(modifier = Modifier.height(16.dp))
