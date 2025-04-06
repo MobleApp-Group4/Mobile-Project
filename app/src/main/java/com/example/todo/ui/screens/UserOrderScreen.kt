@@ -58,6 +58,7 @@ fun UserOrderScreen(
                             Text(text = "- ${item.title} x ${item.quantity}")
                         }
                         Spacer(modifier = Modifier.height(4.dp))
+                        Text("Time: ${order.selectedDate}  ${order.timeSlot}")
                         Text(text = "Note: ${order.note}")
 
                     }

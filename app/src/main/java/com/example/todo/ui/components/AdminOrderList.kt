@@ -85,7 +85,6 @@ fun AdminOrderList(
                     order.orderItems.forEach { item ->
                         Text(text = "- ${item.title} x ${item.quantity}")
                     }
-                    Spacer(modifier = Modifier.height(4.dp))
 
                     TextButton(onClick = { showDetails = !showDetails }) {
                         Text(text = if (showDetails) "Hide Details" else "Show Details")
@@ -95,6 +94,7 @@ fun AdminOrderList(
                         Column {
                             Text("Address: ${order.address}")
                             Text("Phone: ${order.phoneNumber}")
+                            Text("Time: ${order.selectedDate}  ${order.timeSlot}")
                             // Edit Note
                             Row(
                                 modifier = Modifier.fillMaxWidth(),

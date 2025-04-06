@@ -398,7 +398,8 @@ class UserViewModel:  ViewModel()  {
     }
 
     //Order Data
-    fun confirmOrder(userId:String, address: String, phoneNumber: String, note:String) {
+    fun confirmOrder(userId:String, address: String, phoneNumber: String, selectedTimeSlot: String,
+                     selectedDate: String,note:String) {
 //        val userId = _user.value?.userId ?: return
         viewModelScope.launch {
             // create orderId
@@ -428,6 +429,8 @@ class UserViewModel:  ViewModel()  {
                         orderItems = orderItems,
                         address = address,
                         phoneNumber = phoneNumber,
+                        timeSlot = selectedTimeSlot,
+                        selectedDate = selectedDate,
                         note = note
                     )
 
