@@ -130,12 +130,6 @@ fun CheckoutScreen(
             horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             listOf("Lunch", "Dinner").forEach { timeSlot ->
-//                Button(
-//                    onClick = { selectedTimeSlot = timeSlot },
-//                    modifier = Modifier.weight(1f)
-//                ) {
-//                    Text(timeSlot)
-//                }
                 FilterChip(
                     selected = selectedTimeSlot == timeSlot,
                     onClick = { selectedTimeSlot = timeSlot },

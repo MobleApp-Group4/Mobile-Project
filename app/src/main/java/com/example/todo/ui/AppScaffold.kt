@@ -75,7 +75,7 @@ fun AppScaffold(
                 startDestination = "home"
             ) {
                 composable(route = "home") { RecipeScreen(navController,modifier)}
-                composable(route = "login") { LoginScreen(navController=navController,modifier=modifier) }
+                composable(route = "login") { LoginScreen(navController=navController,modifier=modifier,userViewModel=userViewModel) }
                 composable(route = "info") { InfoScreen(modifier) }
                 composable(route = "settings") { SettingsScreen(modifier) }
                 composable(route = "profile") { ProfileScreen(modifier) }

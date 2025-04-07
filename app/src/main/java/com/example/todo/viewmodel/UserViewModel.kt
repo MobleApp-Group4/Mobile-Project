@@ -30,12 +30,20 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import java.util.Date
+import com.example.todo.R
+import androidx.credentials.GetCredentialRequest
+import android.content.Context
+import androidx.credentials.CredentialManager
+import java.util.UUID
+import androidx.credentials.CustomCredential
+
 
 
 class UserViewModel:  ViewModel()  {
 
-    var db = FirebaseFirestore.getInstance()
-        private set
+    private var db = FirebaseFirestore.getInstance()
+    private lateinit var credentialManager: CredentialManager
+    private lateinit var appContext: Context
 
     var favoriteRecipes = mutableStateListOf<Recipe>()
         private set
@@ -47,6 +55,10 @@ class UserViewModel:  ViewModel()  {
 
     private val _isLoggedIn = MutableStateFlow(false)  // ✅ 用 StateFlow 代替 mutableStateOf
     val isLoggedIn: StateFlow<Boolean> = _isLoggedIn.asStateFlow()
+
+    init {
+        Log.d("UserViewModel", "ViewModel instance created: ${this.hashCode()}")
+    }
 
     // Sign up
     fun registerUser(email: String, password: String, onResult: (Boolean, String?) -> Unit) {
@@ -72,15 +84,29 @@ class UserViewModel:  ViewModel()  {
     }
 
     private fun saveUserData(user: User, onComplete: (Boolean) -> Unit) {
-        db.collection("users")
-            .document(user.userId)
-            .set(user)
-            .addOnSuccessListener {
-                Log.d("Firestore", "User data saved successfully!")
-                onComplete(true)
+        val userDocRef = db.collection("users").document(user.userId)
+
+        userDocRef.get()
+            .addOnSuccessListener { document ->
+                if (document.exists()) {
+                    // 已存在，不覆盖，只调用完成
+                    Log.d("Firestore", "User already exists, skip overwriting.")
+                    onComplete(true)
+                } else {
+                    // 不存在，首次登录，写入完整数据
+                    userDocRef.set(user)
+                        .addOnSuccessListener {
+                            Log.d("Firestore", "User created successfully.")
+                            onComplete(true)
+                        }
+                        .addOnFailureListener { e ->
+                            Log.e("Firestore", "Failed to create user", e)
+                            onComplete(false)
+                        }
+                }
             }
             .addOnFailureListener { e ->
-                Log.e("Firestore", "Failed to save user data", e)
+                Log.e("Firestore", "Failed to check user existence", e)
                 onComplete(false)
             }
     }
@@ -182,12 +208,68 @@ class UserViewModel:  ViewModel()  {
     fun getCurrentUserId(): String? {
         return auth.currentUser?.uid
     }
+    fun setCredentialManager(manager: CredentialManager, context: Context) {
+        credentialManager = manager
+        appContext = context.applicationContext
+    }
 
-//    fun signInWithGoogle(idToken: String) {
-//        viewModelScope.launch {
-//            authRepository.signInWithGoogle(idToken)
-//        }
-//    }
+    fun signInWithGoogle(onResult: (Boolean, String?) -> Unit) {
+        viewModelScope.launch {
+            val googleIdOption = GetGoogleIdOption.Builder()
+                .setFilterByAuthorizedAccounts(false)  // 显示所有可用账号
+                .setServerClientId("970461204290-5otupsb41g98v1a13dovmn3ist7ggqu4.apps.googleusercontent.com")       // 替换成你的 Web Client ID
+                .setAutoSelectEnabled(false)
+                .setNonce(UUID.randomUUID().toString())
+                .build()
+
+            val request = GetCredentialRequest.Builder()
+                .addCredentialOption(googleIdOption)
+                .build()
+
+            try {
+                val result = credentialManager.getCredential(
+                    request = request,
+                    context = appContext
+                )
+
+                val credential = result.credential
+                if (credential is CustomCredential &&
+                    credential.type == GoogleIdTokenCredential.TYPE_GOOGLE_ID_TOKEN_CREDENTIAL
+                ) {
+                    val googleIdTokenCredential = GoogleIdTokenCredential.createFrom(credential.data)
+                    val idToken = googleIdTokenCredential.idToken
+                    if (idToken != null) {
+                        val firebaseCredential = GoogleAuthProvider.getCredential(idToken, null)
+                        auth.signInWithCredential(firebaseCredential)
+                            .addOnCompleteListener { task ->
+                                if (task.isSuccessful) {
+                                    val firebaseUser = auth.currentUser
+                                    firebaseUser?.let {
+                                        val userId = it.uid
+                                        val newUser = User(userId = userId, email = it.email ?: "")
+                                        saveUserData(newUser) { success ->
+                                            if (success) {
+                                                _user.value = newUser
+                                                _isLoggedIn.value = true
+                                                onResult(true, null)
+                                            } else {
+                                                onResult(false, "Failed to save user")
+                                            }
+                                        }
+                                    }
+                                } else {
+                                    onResult(false, task.exception?.message)
+                                }
+                            }
+                    }
+                } else {
+                    onResult(false, "No valid Google credential")
+                }
+            } catch (e: Exception) {
+                onResult(false, e.message)
+            }
+        }
+    }
 
     //Favorites
 
@@ -481,7 +563,7 @@ class UserViewModel:  ViewModel()  {
     private val _orders = MutableStateFlow<List<Order>>(emptyList())
     val orders: StateFlow<List<Order>> = _orders.asStateFlow()
 
-    fun fetchOrders(userId:String) {
+    fun getMyOrders(userId:String) {
 //        val userId = _user.value?.userId ?: return
         viewModelScope.launch {
             db.collection("users").document(userId).collection("orders")
@@ -493,6 +575,22 @@ class UserViewModel:  ViewModel()  {
                     }
                 }
         }
+    }
+
+    fun removeMyOrder(userId: String, orderId: String) {
+        val orderRef = db.collection("users")
+            .document(userId)
+            .collection("orders")
+            .document(orderId)
+
+        orderRef.delete()
+            .addOnSuccessListener {
+                Log.d("Firestore", "Order $orderId deleted successfully")
+                getMyOrders(userId)
+            }
+            .addOnFailureListener { e ->
+                Log.e("Firestore", "Failed to delete order $orderId", e)
+            }
     }
 
     //manage orders
@@ -579,47 +677,21 @@ class UserViewModel:  ViewModel()  {
         }
     }
 
+    fun removeAdminOrder(userId: String, orderId: String) {
+        val orderRef = db.collection("users")
+            .document(userId)
+            .collection("orders")
+            .document(orderId)
 
-//
-//    fun signInWithGoogle(onResult: (Boolean, String?) -> Unit) {
-//        val googleIdOption = GetGoogleIdOption.Builder()
-//            .setServerClientId("YOUR_CLIENT_ID") // 替换成你的 Web 客户端 ID
-//            .setFilterByAuthorizedAccounts(false)
-//            .build()
-//
-//        val request = GetCredentialRequest.Builder()
-//            .addCredentialOption(googleIdOption)
-//            .build()
-//
-//        // 获取 Google 认证信息
-//        credentialManager.getCredential(context, request)
-//            .addOnSuccessListener { result ->
-//                val credential = result.credential
-//                if (credential is CustomCredential && credential.type == TYPE_GOOGLE_ID_TOKEN_CREDENTIAL) {
-//                    val googleIdTokenCredential = GoogleIdTokenCredential.createFrom(credential.data)
-//                    firebaseAuthWithGoogle(googleIdTokenCredential.idToken, onResult)
-//                } else {
-//                    onResult(false, "Invalid credential type")
-//                }
-//            }
-//            .addOnFailureListener {
-//                onResult(false, it.localizedMessage)
-//            }
-//    }
-//
-//    // 用 Google Token 登录 Firebase
-//    private fun firebaseAuthWithGoogle(idToken: String, onResult: (Boolean, String?) -> Unit) {
-//        val credential = GoogleAuthProvider.getCredential(idToken, null)
-//        auth.signInWithCredential(credential)
-//            .addOnCompleteListener { task ->
-//                if (task.isSuccessful) {
-//                    val firebaseUser = FirebaseAuth.getInstance().currentUser
-//                    _user.value = firebaseUser?.toUser()  // 更新当前用户
-//                    onResult(true, null)  // 成功回调
-//                } else {
-//                    onResult(false, task.exception?.message)  // 失败回调
-//                }
-//            }
-//    }
+        orderRef.delete()
+            .addOnSuccessListener {
+                Log.d("Firestore", "Order $orderId deleted successfully")
+                getAllOrders()
+                getNewOrders()
+            }
+            .addOnFailureListener { e ->
+                Log.e("Firestore", "Failed to delete order $orderId", e)
+            }
+    }
 
 }

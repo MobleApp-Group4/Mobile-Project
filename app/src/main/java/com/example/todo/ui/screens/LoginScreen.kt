@@ -9,8 +9,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material3.Button
@@ -43,7 +45,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun LoginScreen(
     modifier: Modifier = Modifier,
-    userViewModel: UserViewModel = viewModel(),
+    userViewModel: UserViewModel,
     navController: NavController
 ) {
     var isLogin by remember { mutableStateOf(true) }
@@ -170,7 +172,30 @@ fun LoginScreen(
                 Text(text = if (isLogin) "Don't have an account? Sign Up" else "Already have an account? Sign In")
             }
         }
-//        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(16.dp))
+        Button(
+            onClick = {
+                userViewModel.signInWithGoogle { success, message ->
+                    if (!success) {
+                        Toast.makeText(context, "Google fail to sign in: $message", Toast.LENGTH_LONG).show()
+                    } else {
+                        Toast.makeText(
+                            context,
+                            "Login Successfully",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        navController.navigate("home") {
+                            popUpTo("login") { inclusive = true } // 清空登录栈
+                        }
+                    }
+                }
+            },
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Icon(Icons.Default.AccountCircle, contentDescription = null)
+            Spacer(Modifier.width(8.dp))
+            Text("Google Sign In")
+        }
 //
 //        Button(
 //            onClick = { signInWithGoogle(context) }, // 触发 Google 登录

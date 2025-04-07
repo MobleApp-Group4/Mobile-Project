@@ -31,8 +31,8 @@ import com.google.firebase.auth.GoogleAuthProvider
 
 class MainActivity : ComponentActivity() {
 //    private lateinit var auth: FirebaseAuth
-//    private val userViewModel: UserViewModel by viewModels()  // 使用 ViewModel 来管理用户状态
-//    private val credentialManager by lazy { CredentialManager.create(this) }
+    private val credentialManager by lazy { CredentialManager.create(this) }
+    private val userViewModel: UserViewModel by viewModels()  // 使用 ViewModel 来管理用户状态
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,13 +40,17 @@ class MainActivity : ComponentActivity() {
         FirebaseApp.initializeApp(this)
 //        auth = FirebaseAuth.getInstance()
 
-        val userViewModel: UserViewModel by viewModels()
+//        val userViewModel: UserViewModel by viewModels()
+        userViewModel.setCredentialManager(credentialManager, this) // 传入 CredentialManager 和 context
+
         val recipeViewModel: RecipesViewModel by viewModels()
 
 
         setContent {
             TodoTheme(darkTheme = isSystemInDarkTheme()) {
                 AppScaffold(userViewModel, recipeViewModel)
+                Log.d("MainActivity", "userViewModel instance: ${userViewModel.hashCode()}")
+
             }
         }
 

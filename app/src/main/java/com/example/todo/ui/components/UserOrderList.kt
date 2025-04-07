@@ -3,7 +3,6 @@ package com.example.todo.ui.components
 import android.icu.text.SimpleDateFormat
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -15,17 +14,11 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Card
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ExposedDropdownMenuBox
-import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -41,21 +34,15 @@ import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AdminOrderList(
-    allOrders:List<Order>,
+fun UserOrderList(
+    orders:List<Order>,
     userViewModel:UserViewModel
 ){
     LazyColumn {
-        items(allOrders, key = { it.orderId }) { order ->
-            var expanded by remember { mutableStateOf(false) }
-            var selectedStatus by remember { mutableStateOf(order.status) }
-            val statusOptions = listOf("Pending","In Progress", "Completed","Cancelled")
+        items(orders, key = { it.orderId }) { order ->
             val formattedDate = order.createdAt.toDate().let { date ->
                 SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault()).format(date) // ✅ 格式化日期
             } ?: "Unknown"
-
-            var isEditingNote by remember { mutableStateOf(false) }
-            var noteText by remember { mutableStateOf(order.note ?: "") }
             var showDetails by remember { mutableStateOf(false) }
 
             Card(
@@ -69,20 +56,7 @@ fun AdminOrderList(
                         horizontalArrangement = Arrangement.SpaceBetween
                     ){
                         Text(text = "Order ID: ${order.orderId}")
-                        Box{
-                            TextButton(onClick = { expanded = true }) {
-                                Text(text = selectedStatus)
-                            }
-                            DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
-                                statusOptions.forEach { status ->
-                                    DropdownMenuItem(text = { Text(status) }, onClick = {
-                                        selectedStatus = status
-                                        expanded = false
-                                        userViewModel.updateOrderStatus(order.userId, order.orderId, status)  // 更新状态
-                                    })
-                                }
-                            }
-                        }
+                        Text(text = order.status)
                     }
 
                     Text(text = "Created At: $formattedDate")
@@ -102,7 +76,7 @@ fun AdminOrderList(
                         }
 
                         IconButton(onClick = {
-                            userViewModel.removeAdminOrder(order.userId,order.orderId) // 假设你有一个删除函数
+                            userViewModel.removeMyOrder(order.userId,order.orderId) // 假设你有一个删除函数
                         }) {
                             Icon(
                                 imageVector = Icons.Default.Delete,
@@ -117,41 +91,12 @@ fun AdminOrderList(
                             Text("Address: ${order.address}")
                             Text("Phone: ${order.phoneNumber}")
                             Text("Time: ${order.selectedDate}  ${order.timeSlot}")
-                            // Edit Note
-                            Row(
-                                modifier = Modifier.fillMaxWidth(),
-                                verticalAlignment = Alignment.CenterVertically,
-                                horizontalArrangement = Arrangement.SpaceBetween
-                            ) {
-                                Text(text = "Note")
-                                TextButton(onClick = {
-                                    if (isEditingNote){
-                                        userViewModel.updateOrderNote(order.userId, order.orderId, noteText)
-                                    }
-                                    isEditingNote = !isEditingNote
-                                }) {
-                                    Text(text = if (isEditingNote) "Save" else "Edit")
-                                }
-                            }
-
-                            // 备注内容显示或编辑
-                            if (isEditingNote) {
-                                OutlinedTextField(
-                                    value = noteText,
-                                    onValueChange = { noteText = it },
-                                    modifier = Modifier.fillMaxWidth(),
-                                    placeholder = { Text("Enter your note") },
-                                    singleLine = false,
-
-                                    )
-                            } else {
-                                Text(text = noteText)
-                                Spacer(modifier = Modifier.height(4.dp))
-                            }
-
+                            Text("Note: ${order.note}")
 
                         }
                     }
+                    Spacer(modifier = Modifier.height(8.dp))
+
                 }
             }
         }

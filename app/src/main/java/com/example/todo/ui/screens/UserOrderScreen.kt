@@ -18,6 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.example.todo.ui.components.UserOrderList
 import com.example.todo.viewmodel.UserViewModel
 import com.google.firebase.auth.FirebaseAuth
 
@@ -30,7 +31,7 @@ fun UserOrderScreen(
 ) {
 
     LaunchedEffect(userId) {
-        userViewModel.fetchOrders(userId)
+        userViewModel.getMyOrders(userId)
 
     }
 
@@ -43,27 +44,6 @@ fun UserOrderScreen(
 //        Text(text = "My Orders", style = MaterialTheme.typography.headlineMedium)
         Spacer(modifier = Modifier.height(8.dp))
 
-        LazyColumn {
-            items(orders) { order ->
-                Card(
-                    modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp),
-
-                ) {
-                    Column(modifier = Modifier.padding(16.dp)) {
-                        Text(text = "Order ID: ${order.orderId}")
-                        Text(text = "Status: ${order.status}")
-                        Text(text = "Created At: ${order.createdAt}")
-                        Spacer(modifier = Modifier.height(4.dp))
-                        order.orderItems.forEach { item ->
-                            Text(text = "- ${item.title} x ${item.quantity}")
-                        }
-                        Spacer(modifier = Modifier.height(4.dp))
-                        Text("Time: ${order.selectedDate}  ${order.timeSlot}")
-                        Text(text = "Note: ${order.note}")
-
-                    }
-                }
-            }
-        }
+        UserOrderList(orders, userViewModel)
     }
 }
