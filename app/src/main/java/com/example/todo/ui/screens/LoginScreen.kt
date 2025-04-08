@@ -1,6 +1,7 @@
 package com.example.todo.ui.screens
 
 import android.widget.Toast
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -9,14 +10,19 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Lock
+import androidx.compose.material.icons.filled.Mail
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.SnackbarHostState
@@ -30,14 +36,17 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.example.todo.R
 import com.example.todo.viewmodel.UserViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -51,6 +60,7 @@ fun LoginScreen(
     var isLogin by remember { mutableStateOf(true) }
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
+    var passwordVisible by remember { mutableStateOf(false) }
     val context = LocalContext.current // 获取当前 Context
 
 
@@ -89,8 +99,20 @@ fun LoginScreen(
             value = password,
             onValueChange = { password = it },
             label = { Text(text = "Password") },
-            trailingIcon = { Icon(Icons.Filled.Lock, contentDescription = "Password Icon") },
-            visualTransformation = PasswordVisualTransformation(),
+//            trailingIcon = { Icon(Icons.Filled.Lock, contentDescription = "Password Icon") },
+//            visualTransformation = PasswordVisualTransformation(),
+            visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
+            trailingIcon = {
+                val image = if (passwordVisible)
+                    Icons.Filled.Visibility
+                else Icons.Filled.VisibilityOff
+
+                val description = if (passwordVisible) "Hide password" else "Show password"
+
+                IconButton(onClick = { passwordVisible = !passwordVisible }) {
+                    Icon(imageVector = image, contentDescription = description)
+                }
+            },
             singleLine = true,
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
             modifier = Modifier.fillMaxWidth()
@@ -192,23 +214,15 @@ fun LoginScreen(
             },
             modifier = Modifier.fillMaxWidth()
         ) {
-            Icon(Icons.Default.AccountCircle, contentDescription = null)
+            //Icon(Icons.Default.Mail, contentDescription = null)
+            Image(
+                painter = painterResource(id = R.drawable.gmail_logo),
+                contentDescription = "Google Logo",
+                modifier = Modifier
+                    .size(40.dp)
+            )
             Spacer(Modifier.width(8.dp))
             Text("Google Sign In")
         }
-//
-//        Button(
-//            onClick = { signInWithGoogle(context) }, // 触发 Google 登录
-//            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFDB4437)), // Google 经典红色
-//            modifier = Modifier.fillMaxWidth()
-//        ) {
-//            Icon(
-//                painter = painterResource(id = R.drawable.ic_google_logo), // Google Logo
-//                contentDescription = "Google Sign In",
-//                tint = Color.White
-//            )
-//            Spacer(modifier = Modifier.width(8.dp))
-//            Text(text = "Sign in with Google", color = Color.White)
-//        }
     }
 }

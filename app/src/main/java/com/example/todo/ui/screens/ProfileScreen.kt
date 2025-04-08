@@ -58,7 +58,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 @Composable
 fun ProfileScreen(
     modifier: Modifier = Modifier,
-    userViewModel: UserViewModel = viewModel()
+    userViewModel: UserViewModel
 ) {
     // 默认头像
     val user by userViewModel.user.collectAsState()

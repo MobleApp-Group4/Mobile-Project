@@ -74,16 +74,16 @@ fun AppScaffold(
                 navController = navController,
                 startDestination = "home"
             ) {
-                composable(route = "home") { RecipeScreen(navController,modifier)}
+                composable(route = "home") { RecipeScreen(navController,modifier,recipeViewModel)}
                 composable(route = "login") { LoginScreen(navController=navController,modifier=modifier,userViewModel=userViewModel) }
                 composable(route = "info") { InfoScreen(modifier) }
                 composable(route = "settings") { SettingsScreen(modifier) }
-                composable(route = "profile") { ProfileScreen(modifier) }
-                composable(route = "cart") { CartScreen(navController=navController,modifier=modifier) }
-                composable(route = "checkout") { CheckoutScreen(navController=navController,modifier=modifier) }
-                composable(route = "orders") { OrderScreen(navController=navController,modifier=modifier) }
+                composable(route = "profile") { ProfileScreen(modifier,userViewModel) }
+                composable(route = "cart") { CartScreen(navController=navController,modifier=modifier,userViewModel = userViewModel) }
+                composable(route = "checkout") { CheckoutScreen(navController=navController,modifier=modifier,userViewModel = userViewModel) }
+                composable(route = "orders") { OrderScreen(navController=navController,modifier=modifier,userViewModel = userViewModel) }
 //                composable(route = "all_orders") { AdminOrderScreen(modifier=modifier) }
-                composable(route = "favorites") { FavoriteScreen(navController,modifier) }
+                composable(route = "favorites") { FavoriteScreen(navController,modifier,userViewModel,recipeViewModel) }
                 composable("recipes/{recipeId}") { backStackEntry ->
                     val recipeId = backStackEntry.arguments?.getString("recipeId")?.toInt() ?: 0
                     RecipeDetailScreen(navController=navController,modifier=modifier,recipeId=recipeId,recipeViewModel = recipeViewModel,

@@ -26,7 +26,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.todo.viewmodel.UserViewModel
 import com.google.firebase.auth.FirebaseAuth
@@ -43,10 +42,9 @@ import java.util.*
 fun CheckoutScreen(
     navController: NavController,
     modifier: Modifier,
-    userViewModel: UserViewModel = viewModel()
+    userViewModel: UserViewModel
 ) {
 
-//    val userInfo by viewModel.userInfo.observeAsState()
     val cartItems by userViewModel.cartItems.collectAsState(emptyList())
     val userInfo by userViewModel.user.collectAsState()
 

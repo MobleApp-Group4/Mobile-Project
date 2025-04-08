@@ -9,7 +9,7 @@ import com.google.firebase.auth.FirebaseAuth
 
 @Composable
 fun OrderScreen(
-    userViewModel: UserViewModel = viewModel(),
+    userViewModel: UserViewModel,
     modifier: Modifier,
     navController: NavController
 ) {

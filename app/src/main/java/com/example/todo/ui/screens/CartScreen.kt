@@ -15,7 +15,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.todo.ui.components.CartItem
 import com.example.todo.viewmodel.UserViewModel
@@ -27,7 +26,7 @@ import com.google.firebase.auth.FirebaseAuth
 @Composable
 fun CartScreen(
     modifier:Modifier=Modifier,
-    userViewModel: UserViewModel = viewModel(),
+    userViewModel: UserViewModel,
     navController: NavController
 ) {
     // 示例数据（通常应从 ViewModel 或 Repository 获取）

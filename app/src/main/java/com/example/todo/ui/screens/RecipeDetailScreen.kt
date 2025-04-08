@@ -61,8 +61,8 @@ import org.jsoup.Jsoup
 fun RecipeDetailScreen(
     recipeId: Int,
     navController: NavController,
-    recipeViewModel: RecipesViewModel = viewModel(),
-    userViewModel: UserViewModel = viewModel(),
+    recipeViewModel: RecipesViewModel,
+    userViewModel: UserViewModel,
     modifier: Modifier = Modifier
 ) {
 

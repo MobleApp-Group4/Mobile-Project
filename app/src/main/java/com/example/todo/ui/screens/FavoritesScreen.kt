@@ -33,8 +33,8 @@ import com.google.firebase.auth.FirebaseAuth
 fun FavoriteScreen(
     navController: NavController,
     modifier: Modifier = Modifier,
-    userViewModel: UserViewModel = viewModel(),
-    recipesViewModel: RecipesViewModel = viewModel()
+    userViewModel: UserViewModel,
+    recipesViewModel: RecipesViewModel,
     ) {
     var searchWord by remember { mutableStateOf("") }
     val user = FirebaseAuth.getInstance().currentUser

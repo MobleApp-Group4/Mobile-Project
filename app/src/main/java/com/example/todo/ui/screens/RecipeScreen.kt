@@ -32,7 +32,7 @@ import com.example.todo.viewmodel.RecipesViewModel
 fun RecipeScreen(
     navController: NavController,
     modifier: Modifier = Modifier,
-    recipesViewModel: RecipesViewModel = viewModel()
+    recipesViewModel: RecipesViewModel
 ) {
     val categories = listOf("Vegan","Vegetarian","Pescatarian","Primal","Whole30","DairyFree","Paleo","GlutenFree")
     var selectedCategory by remember { mutableStateOf<String?>(null) }
