@@ -1,4 +1,4 @@
-package com.example.todo.components
+package com.example.todo.ui.components
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ElevatedFilterChip
@@ -13,6 +13,6 @@ fun FilterChip(category: String, selected: Boolean,onClick: () -> Unit) {
         selected = selected,
         onClick = onClick,
         label = { Text(category) },
-        modifier = Modifier.padding(end = 8.dp)
+        modifier = Modifier
     )
 }

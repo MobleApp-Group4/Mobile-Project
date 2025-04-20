@@ -1,5 +1,6 @@
-package com.example.todo.appbars
+package com.example.todo.ui.appbars
 
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
@@ -20,6 +21,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
@@ -29,10 +31,15 @@ import com.example.todo.viewmodel.UserViewModel
 @Composable
 fun DetailBottomBar(
     navController: NavController,
+    userId: String?,
     recipeId: Int,
-    userViewModel: UserViewModel = viewModel()
+    title: String,
+    image: String,
+    userViewModel: UserViewModel = viewModel(),
+    modifier: Modifier = Modifier
     ) {
     val backStackEntry = navController.currentBackStackEntryAsState()
+    val context = LocalContext.current
 
     // Tab items for navigation
     val tabs = listOf(
@@ -44,7 +51,7 @@ fun DetailBottomBar(
     //var buttonColor by remember { mutableStateOf(Color(0xFFFFA500)) }
 
     BottomAppBar(
-        modifier = Modifier.fillMaxWidth()
+        modifier = modifier.fillMaxWidth()
     ) {
         // First two buttons are navigation buttons (Home and Cart)
         Row(
@@ -71,8 +78,19 @@ fun DetailBottomBar(
         // Add "Add to Cart" button
         TextButton(
             onClick = {
-                // Execute logic to add to cart, for example:
-                userViewModel.addToCart(userId = "123", recipeId = recipeId.toString())
+                if (userId != null){
+                    userViewModel.addToCart(userId = userId, recipeId = recipeId.toString(),title = title,
+                        image = image)
+                } else{
+                    Toast.makeText(
+                        context,
+                        "Login Please",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    navController.navigate("login") {
+                        popUpTo("login") { inclusive = true } // 清空登录栈
+                    }
+                }
             },
             modifier = Modifier
                 .background(Color(0xFFFFD700)) // Background color for button

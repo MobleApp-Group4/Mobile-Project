@@ -23,29 +23,36 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import com.example.todo.components.RecipeList
+import com.example.todo.ui.components.RecipeList
+import com.example.todo.viewmodel.RecipesViewModel
 import com.example.todo.viewmodel.UserViewModel
+import com.google.firebase.auth.FirebaseAuth
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun FavoriteScreen(
     navController: NavController,
     modifier: Modifier = Modifier,
-    userViewModel: UserViewModel = viewModel(),
+    userViewModel: UserViewModel,
+    recipesViewModel: RecipesViewModel,
     ) {
-    val userId = 123
     var searchWord by remember { mutableStateOf("") }
-
+    val user = FirebaseAuth.getInstance().currentUser
+    val userId = user?.uid
 
     LaunchedEffect(userId) {
-        userViewModel.getFavoriteRecipes(userId.toString())
+        if (userId != null){
+            userViewModel.getFavoriteRecipes(userId)
+        }
     }
     val favoriteRecipes = userViewModel.favoriteRecipes
     val filteredRecipes = favoriteRecipes.filter{
         it.title.contains(searchWord, ignoreCase = true)
     }
 
-    Column(modifier = modifier) {
+    Column(
+        modifier = modifier.padding(16.dp)
+    ) {
 
         OutlinedTextField(
             value = searchWord,

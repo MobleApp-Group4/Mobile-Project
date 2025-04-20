@@ -11,8 +11,9 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 
 const val RECIPE_BASE_URL = "https://api.spoonacular.com/"
-//const val RECIPE_API_KEY = "9f936231ffbf466d87c547e0e415120e"
-const val RECIPE_API_KEY = "8bb7956733bd400880ae0036aeaccff3"
+const val RECIPE_API_KEY = "9f936231ffbf466d87c547e0e415120e"
+//const val RECIPE_API_KEY = "8bb7956733bd400880ae0036aeaccff3"
+//const val RECIPE_API_KEY = "246d61e964774b23ab5e218db9f19dda"
 
 interface RecipesApi {
     @GET("recipes/complexSearch")

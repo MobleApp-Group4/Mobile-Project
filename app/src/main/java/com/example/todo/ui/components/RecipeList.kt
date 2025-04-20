@@ -1,4 +1,4 @@
-package com.example.todo.components
+package com.example.todo.ui.components
 
 import android.icu.text.DecimalFormat
 import androidx.compose.foundation.Image
@@ -35,6 +35,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
 import com.example.todo.model.Recipe
+import com.example.todo.viewmodel.RecipesViewModel
 
 @Composable
 fun RecipeList(recipes: List<Recipe>,navController: NavController) {
@@ -50,8 +51,9 @@ fun RecipeList(recipes: List<Recipe>,navController: NavController) {
 @Composable
 fun RecipeItem(recipe: Recipe,navController: NavController) {
 
+
     Card(
-        modifier = Modifier.padding(8.dp),
+        modifier = Modifier.padding(bottom = 16.dp),
     ) {
         Column(
             modifier = Modifier.padding(16.dp)
