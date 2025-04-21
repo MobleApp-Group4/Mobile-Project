@@ -36,7 +36,8 @@ import android.content.Context
 import androidx.credentials.CredentialManager
 import java.util.UUID
 import androidx.credentials.CustomCredential
-
+import com.google.firebase.Firebase
+import com.google.firebase.storage.storage
 
 
 class UserViewModel:  ViewModel()  {
@@ -172,7 +173,7 @@ class UserViewModel:  ViewModel()  {
     }
 
     fun updateAvatar(userId: String, imageUri: Uri, onResult: (Boolean, String?) -> Unit) {
-        val storageRef = FirebaseStorage.getInstance().reference.child("avatars/$userId.jpg")
+        val storageRef = Firebase.storage.reference.child("avatars/$userId.jpg")
 
         storageRef.putFile(imageUri)
             .addOnSuccessListener {
@@ -180,18 +181,18 @@ class UserViewModel:  ViewModel()  {
                     db.collection("users").document(userId)
                         .update("avatar", downloadUrl.toString())
                         .addOnSuccessListener {
-                            _user.value = _user.value?.copy(avatar = downloadUrl.toString())  // ✅ UI 更新
-                            Log.d("updateAvatar", "✅ 头像上传成功: $downloadUrl")
+                            _user.value = _user.value?.copy(avatar = downloadUrl.toString())
+                            Log.d("updateAvatar", "Update Avatar Successfully: $downloadUrl")
                             onResult(true, null)
                         }
                         .addOnFailureListener { e ->
-                            Log.e("updateAvatar", "❌ Firestore 更新失败", e)
+                            Log.e("updateAvatar", " Firestore fail", e)
                             onResult(false, e.message)
                         }
                 }
             }
             .addOnFailureListener { e ->
-                Log.e("updateAvatar", "❌ 头像上传失败", e)
+                Log.e("updateAvatar", "Fail to update", e)
                 onResult(false, e.message)
             }
     }

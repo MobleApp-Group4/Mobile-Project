@@ -60,7 +60,7 @@ fun ProfileScreen(
     modifier: Modifier = Modifier,
     userViewModel: UserViewModel
 ) {
-    // 默认头像
+    // default avatar
     val user by userViewModel.user.collectAsState()
     var isEditing by remember { mutableStateOf(false) }  // 是否在编辑模式
 
@@ -98,12 +98,10 @@ fun ProfileScreen(
             var name by remember { mutableStateOf(currentUser.name.ifEmpty { "" }) }
             var email by remember { mutableStateOf(currentUser.email) }
             var gender by remember { mutableStateOf(currentUser.gender.ifEmpty { "" }) }
-            var birthday by remember { mutableStateOf(currentUser.birthday.ifEmpty { "Select Birthdate" }) }
+            //var birthday by remember { mutableStateOf(currentUser.birthday.ifEmpty { "Select Birthdate" }) }
             var address by remember { mutableStateOf(currentUser.address.ifEmpty { "" }) }
             var phoneNumber by remember { mutableStateOf(currentUser.phoneNumber.ifEmpty { "" }) }
-            val avatar by remember { mutableStateOf(currentUser.avatar.ifEmpty { "" }) }
-            // 头像上传
-
+            //val avatar by remember { mutableStateOf(currentUser.avatar.ifEmpty { "" }) }
 
 
             Spacer(modifier = Modifier.height(16.dp))
@@ -320,7 +318,7 @@ fun ProfileScreen(
                                 gender = gender,
                                 address = address,
                                 phoneNumber = phoneNumber,
-                                avatar = avatar
+                                avatar = currentUser.avatar
                             )
                             userViewModel.updateUser(updatedUserData) { success, message ->
                                 if (success) {

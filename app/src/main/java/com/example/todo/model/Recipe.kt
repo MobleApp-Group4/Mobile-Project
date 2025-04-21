@@ -62,19 +62,6 @@ data class User(
     val phoneNumber: String = "",
 )
 
-fun FirebaseUser.toUser(): User {
-    return User(
-        userId = this.uid,
-        email = this.email ?: "",
-        gender = "", // 你可以从 Firestore 或 Realtime Database 获取更多信息
-        birthday = "",
-        createdAt = "", // 根据需要可以从 Firebase 获取创建时间
-        address = "",
-        name = this.displayName ?: "",
-        avatar = this.photoUrl?.toString() ?: "", // 获取用户的头像 URL
-        phoneNumber = this.phoneNumber ?: ""
-    )
-}
 
 data class Comment(
     val userId: String = "",

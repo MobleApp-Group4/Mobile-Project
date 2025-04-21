@@ -16,7 +16,7 @@ import androidx.credentials.CredentialManager
 
 class MainActivity : ComponentActivity() {
     private val credentialManager by lazy { CredentialManager.create(this) }
-    private val userViewModel: UserViewModel by viewModels()  // 使用 ViewModel 来管理用户状态
+    val userViewModel: UserViewModel by viewModels()  // 使用 ViewModel 来管理用户状态
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
