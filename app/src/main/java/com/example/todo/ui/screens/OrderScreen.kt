@@ -1,6 +1,9 @@
 package com.example.todo.ui.screens
 
+import android.util.Log
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
@@ -13,13 +16,16 @@ fun OrderScreen(
     modifier: Modifier,
     navController: NavController
 ) {
-    val user = FirebaseAuth.getInstance().currentUser
-    val userId = user?.uid
+    val user by userViewModel.user.collectAsState()
+    val userId = user?.userId
+    val role = user?.role
 
-    if (userId == "3iAMOHgKEIZtPjqb9peubRcjrAR2") {
+    if (role == "admin") {
+        Log.e("OderScreen", " $role")
         AdminOrderScreen(modifier,userViewModel)
     } else {
         if (userId != null) {
+            Log.e("OderScreen", " $role")
             UserOrderScreen(userViewModel, modifier,navController,userId)
         }
     }

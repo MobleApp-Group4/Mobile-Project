@@ -60,6 +60,7 @@ data class User(
     val name: String = "",
     val avatar: String = "",
     val phoneNumber: String = "",
+    val role: String = "",
 )
 
 
