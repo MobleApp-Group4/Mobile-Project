@@ -5,5 +5,5 @@ import androidx.compose.runtime.Composable
 
 @Composable
 fun ErrorScreen() {
-    Text("Error retrieving data from API.")
+    Text("Error retrieving data from API.//")
 }
