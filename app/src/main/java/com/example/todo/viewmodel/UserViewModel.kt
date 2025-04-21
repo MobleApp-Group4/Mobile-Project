@@ -50,11 +50,11 @@ class UserViewModel:  ViewModel()  {
         private set
 
     private val auth: FirebaseAuth = FirebaseAuth.getInstance()
-    private val _user = MutableStateFlow<User?>(null) // 存储当前登录用户
+    private val _user = MutableStateFlow<User?>(null)
     val user: StateFlow<User?> = _user.asStateFlow()
 
 
-    private val _isLoggedIn = MutableStateFlow(false)  // ✅ 用 StateFlow 代替 mutableStateOf
+    private val _isLoggedIn = MutableStateFlow(false)
     val isLoggedIn: StateFlow<Boolean> = _isLoggedIn.asStateFlow()
 
     init {
@@ -69,7 +69,7 @@ class UserViewModel:  ViewModel()  {
                     val firebaseUser = auth.currentUser
                     firebaseUser?.let {
                         val userId = it.uid
-                        val newUser = User(userId = userId, email = email)
+                        val newUser = User(userId = userId, email = email,role = "user")
                         saveUserData(newUser) { success ->
                             if (success) {
                                 onResult(true, "Successful to save user data")  //  onComplete(true)
@@ -90,11 +90,9 @@ class UserViewModel:  ViewModel()  {
         userDocRef.get()
             .addOnSuccessListener { document ->
                 if (document.exists()) {
-                    // 已存在，不覆盖，只调用完成
                     Log.d("Firestore", "User already exists, skip overwriting.")
                     onComplete(true)
                 } else {
-                    // 不存在，首次登录，写入完整数据
                     userDocRef.set(user)
                         .addOnSuccessListener {
                             Log.d("Firestore", "User created successfully.")

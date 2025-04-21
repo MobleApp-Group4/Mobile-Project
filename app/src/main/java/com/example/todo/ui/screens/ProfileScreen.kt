@@ -6,7 +6,6 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -19,12 +18,10 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -52,7 +49,6 @@ import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import coil.compose.rememberAsyncImagePainter
 import com.example.todo.viewmodel.UserViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -62,11 +58,17 @@ fun ProfileScreen(
 ) {
     // default avatar
     val user by userViewModel.user.collectAsState()
-    var isEditing by remember { mutableStateOf(false) }  // 是否在编辑模式
+    var isEditing by remember { mutableStateOf(false) }
+
+    var name by remember { mutableStateOf("") }
+    var email by remember { mutableStateOf("") }
+    var gender by remember { mutableStateOf("") }
+    var address by remember { mutableStateOf("") }
+    var phoneNumber by remember { mutableStateOf("") }
 
     LaunchedEffect(Unit) {
         userViewModel.getCurrentUserId()?.let { userId ->
-            userViewModel.loadUserData(userId)  // 进入页面时加载用户数据
+            userViewModel.loadUserData(userId)
         }
     }
 
@@ -87,11 +89,6 @@ fun ProfileScreen(
             }
         }
     )
-    var name by remember { mutableStateOf("") }
-    var email by remember { mutableStateOf("") }
-    var gender by remember { mutableStateOf("") }
-    var address by remember { mutableStateOf("") }
-    var phoneNumber by remember { mutableStateOf("") }
 
     LaunchedEffect(user) {
         user?.let {
@@ -233,7 +230,7 @@ fun ProfileScreen(
                 )
 
                 Spacer(modifier = Modifier.height(8.dp))
-                // email
+                // input email
                 OutlinedTextField(
                     value = email,
                     onValueChange = { email = it },
@@ -243,6 +240,7 @@ fun ProfileScreen(
                     readOnly = true
                 )
 
+                //input address
                 Spacer(modifier = Modifier.height(8.dp))
                 OutlinedTextField(
                     value = address,
@@ -251,18 +249,10 @@ fun ProfileScreen(
                     modifier = Modifier.fillMaxWidth()
                 )
 
+                //select gender
                 Spacer(modifier = Modifier.height(8.dp))
                 var expanded by remember { mutableStateOf(false) }
-//                Box(
-//                    modifier = Modifier
-//                        .fillMaxWidth()
-//                        .clickable { expanded = true }
-//                        .border(1.dp, Color.Gray, RoundedCornerShape(4.dp))
-//
-//
-//                ) {
-//                    Text(text = gender)
-//                }
+
                 ExposedDropdownMenuBox(
                     expanded = expanded,
                     onExpandedChange = { expanded = it } // 自动管理展开/收起
@@ -270,7 +260,7 @@ fun ProfileScreen(
                     OutlinedTextField(
                         value = gender,
                         onValueChange = {},
-                        readOnly = true, // 禁止手动输入
+                        readOnly = true, // no input
                         label = { Text("Gender") },
                         trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
                         modifier = Modifier
@@ -293,7 +283,7 @@ fun ProfileScreen(
                     }
                 }
 
-                // Phone Number
+                // input Phone Number
                  OutlinedTextField(
                     value = phoneNumber,
                     onValueChange = { phoneNumber = it },
