@@ -43,14 +43,8 @@ fun InfoScreen(
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            Text(
-                text = "Foodie Genie",
-                fontSize = 26.sp,
-                fontWeight = FontWeight.Bold
-            )
 
         }
-
 
     }
 }
