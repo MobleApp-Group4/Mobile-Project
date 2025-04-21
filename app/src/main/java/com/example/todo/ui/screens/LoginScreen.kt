@@ -123,7 +123,7 @@ fun LoginScreen(
             onClick = {
                 if (email.isNotBlank() && password.isNotBlank()) {
                     if (isLogin) {
-                        // 调用登录方法
+                        // login function
                         userViewModel.loginUser(email, password) { success, error ->
 //                            coroutineScope.launch{
 //                                snackbarHostState.showSnackbar(

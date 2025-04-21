@@ -48,7 +48,6 @@ fun InfoScreen(
                 fontSize = 26.sp,
                 fontWeight = FontWeight.Bold
             )
-
             Text(
                 text = "Version 1.0.3",
                 fontSize = 14.sp,
@@ -56,47 +55,10 @@ fun InfoScreen(
             )
 
             Spacer(modifier = Modifier.height(24.dp))
+
         }
 
-        item {
-            SectionTitle("About the App")
-            SectionText(
-                "Foodie Genie is a mobile app that brings personalized, high-end dining experiences directly to your door. Whether you're hosting a private dinner, a business event, or a family gathering, our app makes it easy to browse custom menus, book professional chefs, and arrange seamless culinary experiences. Specializing in Asian-inspired dishes, Foodie Genie focuses on using high-quality ingredients and offering expert chef services, transforming your home into a unique dining destination."
-            )
-        }
-
-        item {
-            SectionTitle("Developer")
-            SectionText("Foodie Genie Group\nEmail: foodiegenie@foo.com")
-        }
-
-        item {
-            SectionTitle("Privacy Policy")
-            SectionText("We value your privacy. Your personal data is safe and never shared without permission.")
-        }
 
     }
 }
 
-@Composable
-fun SectionTitle(text: String) {
-    Text(
-        text = text,
-        fontSize = 20.sp,
-        fontWeight = FontWeight.SemiBold,
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 8.dp)
-    )
-}
-
-@Composable
-fun SectionText(text: String) {
-    Text(
-        text = text,
-        fontSize = 16.sp,
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(bottom = 16.dp)
-    )
-}
