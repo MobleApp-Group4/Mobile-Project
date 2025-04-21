@@ -55,8 +55,15 @@ fun InfoScreen(
             )
 
             Spacer(modifier = Modifier.height(24.dp))
+            Text(
+                text = "Version 1.0.3",
+                fontSize = 14.sp,
+                color = Color.Gray
+            )
 
+            Spacer(modifier = Modifier.height(24.dp))
         }
+
         item {
             Text(
                 text = "About the App",
@@ -72,10 +79,8 @@ fun InfoScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(bottom = 16.dp)
-                )
+            )
         }
-
-
     }
 }
 
