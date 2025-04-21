@@ -57,6 +57,16 @@ fun InfoScreen(
             Spacer(modifier = Modifier.height(24.dp))
 
         }
+        item {
+            Text(
+                text = "About the App",
+                fontSize = 20.sp,
+                fontWeight = FontWeight.SemiBold,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 8.dp)
+            )
+        }
 
 
     }
