@@ -70,6 +70,7 @@ fun ProfileScreen(
         }
     }
 
+
     val launcher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent(),
         onResult = { uri: Uri? ->
@@ -77,16 +78,30 @@ fun ProfileScreen(
                 user?.userId?.let { userId ->
                     userViewModel.updateAvatar(userId, it) { success, message ->
                         if (success) {
-                            Log.d("ProfileScreen", "✅ Avatar updated")
+                            Log.d("ProfileScreen", " Avatar updated")
                         } else {
-                            Log.e("ProfileScreen", "❌ Fail: $message")
+                            Log.e("ProfileScreen", " Fail: $message")
                         }
                     }
                 }
             }
         }
     )
+    var name by remember { mutableStateOf("") }
+    var email by remember { mutableStateOf("") }
+    var gender by remember { mutableStateOf("") }
+    var address by remember { mutableStateOf("") }
+    var phoneNumber by remember { mutableStateOf("") }
 
+    LaunchedEffect(user) {
+        user?.let {
+            name = it.name
+            email = it.email
+            gender = it.gender
+            address = it.address
+            phoneNumber = it.phoneNumber
+        }
+    }
 
     Column(
         modifier = modifier
@@ -95,13 +110,6 @@ fun ProfileScreen(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         user?.let { currentUser ->
-            var name by remember { mutableStateOf(currentUser.name.ifEmpty { "" }) }
-            var email by remember { mutableStateOf(currentUser.email) }
-            var gender by remember { mutableStateOf(currentUser.gender.ifEmpty { "" }) }
-            //var birthday by remember { mutableStateOf(currentUser.birthday.ifEmpty { "Select Birthdate" }) }
-            var address by remember { mutableStateOf(currentUser.address.ifEmpty { "" }) }
-            var phoneNumber by remember { mutableStateOf(currentUser.phoneNumber.ifEmpty { "" }) }
-            //val avatar by remember { mutableStateOf(currentUser.avatar.ifEmpty { "" }) }
 
 
             Spacer(modifier = Modifier.height(16.dp))
