@@ -49,9 +49,10 @@ fun InfoScreen(
                 fontWeight = FontWeight.Bold
             )
 
+
         }
+
 
 
     }
 }
-
