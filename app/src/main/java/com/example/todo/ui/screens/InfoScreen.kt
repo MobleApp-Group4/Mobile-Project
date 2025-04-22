@@ -35,7 +35,7 @@ fun InfoScreen(
         item {
             // App Logo
             Image(
-                painter = painterResource(id = R.drawable.logo_color), // 换成你的 logo 资源
+                painter = painterResource(id = R.drawable.logo_color),
                 contentDescription = "App Logo",
                 modifier = Modifier
                     .size(150.dp)
@@ -64,5 +64,33 @@ fun InfoScreen(
                     .padding(bottom = 16.dp)
             )
         }
+        item {
+            SectionTitle("Developer")
+            SectionText("Foodie Genie Group\nEmail: foodiegenie@foo.com")
+        }
+
     }
+}
+
+@Composable
+fun SectionTitle(text: String) {
+    Text(
+        text = text,
+        fontSize = 20.sp,
+        fontWeight = FontWeight.SemiBold,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 8.dp)
+    )
+}
+
+@Composable
+fun SectionText(text: String) {
+    Text(
+        text = text,
+        fontSize = 16.sp,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(bottom = 16.dp)
+    )
 }
