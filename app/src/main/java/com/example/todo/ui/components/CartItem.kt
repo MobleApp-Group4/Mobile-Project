@@ -43,11 +43,11 @@ fun CartItem(
         modifier = Modifier
             .padding(vertical = 8.dp)
             .fillMaxWidth()
-            .border(1.dp, colorScheme.primary, shape = RoundedCornerShape(10.dp)) // 使用主题调整边框颜色
+            .border(1.dp, colorScheme.primary, shape = RoundedCornerShape(10.dp)) // Use the theme to adjust the border color
     ) {
         val (pic, titleTxt, quantityRow) = createRefs()
 
-        // 商品图片
+        // Product pictures
         Image(
             painter = rememberAsyncImagePainter(cartRecipe.image),
             contentDescription = null,
@@ -63,7 +63,7 @@ fun CartItem(
                 }
         )
 
-        // 商品名称
+        // Product name
         Text(
             text = cartRecipe.title,
             fontSize = 16.sp,
@@ -86,7 +86,7 @@ fun CartItem(
             softWrap = true
         )
 
-        // 计数控制区
+        // Counting control area
         Row(
             modifier = Modifier
                 .constrainAs(quantityRow) {
@@ -103,13 +103,13 @@ fun CartItem(
                         if (cartRecipe.quantity > 0) {
                             onQuantityChange(cartRecipe.quantity - 1)
                         }                    }
-                    .background(colorScheme.primary, shape = RoundedCornerShape(5.dp)) // 使用主题背景颜色
+                    .background(colorScheme.primary, shape = RoundedCornerShape(5.dp)) // Use the theme background color
             ) {
                 Text(
                     "-",
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold,
-                    color = Color.White, // 按钮上使用白色文本
+                    color = Color.White, // Use white text on the button
                     modifier = Modifier.align(Alignment.Center)
                 )
             }
@@ -118,7 +118,7 @@ fun CartItem(
                 text = " ${cartRecipe.quantity} ",
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Bold,
-                color = colorScheme.onSurface, // 使用主题中的文本颜色
+                color = colorScheme.onSurface, // Use the text color in the theme
                 modifier = Modifier.padding(horizontal = 8.dp)
             )
 
@@ -128,13 +128,13 @@ fun CartItem(
                     .clickable {
                         onQuantityChange(cartRecipe.quantity + 1)
                     }
-                    .background(colorScheme.primary, shape = RoundedCornerShape(5.dp)) // 使用主题背景颜色
+                    .background(colorScheme.primary, shape = RoundedCornerShape(5.dp)) // Use the theme background color
             ) {
                 Text(
                     "+",
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold,
-                    color = Color.White, // 按钮上使用白色文本
+                    color = Color.White, // Use white text on the button
                     modifier = Modifier.align(Alignment.Center)
                 )
             }
