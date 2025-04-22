@@ -174,38 +174,56 @@ fun RecipeDetailScreen(
                             )
                         }
 
-                        // 收藏按钮
+                        // favorite button
                         IconButton(onClick = {
                             Log.d("AddFavorite", "Favorite button clicked")  // 确保点击事件被触发
                             isFavorite.value = !isFavorite.value
-                            if (isFavorite.value) {
-                                if (userId != null){
-                                    userViewModel.addFavorite(userId,recipeId.toString())  // 添加收藏
-                                    Log.d("AddFavorite", "Add")  // 确保点击事件被触发
+//                            if (isFavorite.value) {
+//                                if (userId != null){
+//                                    userViewModel.addFavorite(userId,recipeId.toString())  // 添加收藏
+//                                    Log.d("AddFavorite", "Add")
+//                                }else{
+//                                    Toast.makeText(
+//                                        context,
+//                                        "Login Please",
+//                                        Toast.LENGTH_SHORT
+//                                    ).show()
+//                                    navController.navigate("login") {
+//                                        popUpTo("login") { inclusive = true } // 清空登录栈
+//                                    }
+//                                }
+//                            } else {
+//                                if (userId != null){
+//                                    userViewModel.removeFavorite(userId,recipeId.toString())  // 取消收藏
+//                                }else{
+//                                    Toast.makeText(
+//                                        context,
+//                                        "Login Please",
+//                                        Toast.LENGTH_SHORT
+//                                    ).show()
+//                                    navController.navigate("home") {
+//                                        popUpTo("login") { inclusive = true } // 清空登录栈
+//                                    }
+//                                }
+//                            }
+                            if (userId != null){
+                                if (isFavorite.value){
+                                    userViewModel.addFavorite(userId,recipeId.toString())
+                                    Log.d("AddFavorite", "Add")
                                 }else{
-                                    Toast.makeText(
-                                        context,
-                                        "Login Please",
-                                        Toast.LENGTH_SHORT
-                                    ).show()
-                                    navController.navigate("login") {
-                                        popUpTo("login") { inclusive = true } // 清空登录栈
-                                    }
+                                    userViewModel.removeFavorite(userId,recipeId.toString())
                                 }
-                            } else {
-                                if (userId != null){
-                                    userViewModel.removeFavorite(userId,recipeId.toString())  // 取消收藏
-                                }else{
-                                    Toast.makeText(
-                                        context,
-                                        "Login Please",
-                                        Toast.LENGTH_SHORT
-                                    ).show()
-                                    navController.navigate("home") {
-                                        popUpTo("login") { inclusive = true } // 清空登录栈
-                                    }
+                            }else {
+                                Toast.makeText(
+                                    context,
+                                    "Login Please",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                                navController.navigate("login") {
+                                    popUpTo("login") { inclusive = true } // empty
                                 }
                             }
+
                         }) {
                             Icon(
                                 imageVector = if (isFavorite.value) Icons.Filled.Favorite else Icons.Outlined.FavoriteBorder,

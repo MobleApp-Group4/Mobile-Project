@@ -288,23 +288,6 @@ class UserViewModel:  ViewModel()  {
     }
 
     fun addFavorite(userId:String, recipeId: String) {
-//        val userId = _user.value?.userId ?: return
-//        Log.d("AddFavorite", "User: ${_user.value}")  // 确保 _user.value 不为空
-//        Log.d("AddFavorite", "User ID: $userId") // 添加日志，确认 userId 是否为空
-//        val user = _user.value
-//        if (user == null) {
-//            Log.d("AddFavorite", "User is null, aborting favorite action")
-//            return
-//        }
-//
-//        Log.d("AddFavorite", "✅ Adding favorite for User: ${user.userId}")
-//
-//
-//        val userId = user.userId
-//        Log.d("AddFavorite", "User: $user")  // 打印 user 对象
-//        Log.d("AddFavorite", "User ID: $userId")  // 打印 userId
-//        Log.d("AddFavorite", "Recipe ID: $recipeId")  // 打印 recipeId
-
 
         val favoriteData = mapOf(
             "recipeId" to recipeId,
