@@ -48,6 +48,15 @@ fun InfoScreen(
                 fontSize = 26.sp,
                 fontWeight = FontWeight.Bold
             )
+
+            Text(
+                text = "Version 1.0.3",
+                fontSize = 14.sp,
+                color = Color.Gray
+            )
+
+            Spacer(modifier = Modifier.height(24.dp))
+
             Text(
                 text = "About the App",
                 fontSize = 20.sp,
@@ -67,6 +76,11 @@ fun InfoScreen(
         item {
             SectionTitle("Developer")
             SectionText("Foodie Genie Group\nEmail: foodiegenie@foo.com")
+        }
+
+        item {
+            SectionTitle("Privacy Policy")
+            SectionText("We value your privacy. Your personal data is safe and never shared without permission.")
         }
 
     }
