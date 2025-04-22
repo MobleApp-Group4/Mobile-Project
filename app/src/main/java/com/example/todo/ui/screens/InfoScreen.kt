@@ -69,6 +69,11 @@ fun InfoScreen(
             SectionText("Foodie Genie Group\nEmail: foodiegenie@foo.com")
         }
 
+        item {
+            SectionTitle("Privacy Policy")
+            SectionText("We value your privacy. Your personal data is safe and never shared without permission.")
+        }
+
     }
 }
 
