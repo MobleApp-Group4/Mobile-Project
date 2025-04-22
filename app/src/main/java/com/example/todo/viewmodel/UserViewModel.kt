@@ -195,6 +195,13 @@ class UserViewModel:  ViewModel()  {
             }
     }
 
+    fun initUserIfLoggedIn() {
+        val currentUser = FirebaseAuth.getInstance().currentUser
+        currentUser?.uid?.let { uid ->
+            loadUserData(uid)
+        }
+    }
+
 
     fun logout() {
         auth.signOut()

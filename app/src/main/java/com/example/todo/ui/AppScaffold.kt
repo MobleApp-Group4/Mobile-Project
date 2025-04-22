@@ -3,6 +3,7 @@ package com.example.todo.ui
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
@@ -32,11 +33,16 @@ fun AppScaffold(
     userViewModel: UserViewModel,
     recipeViewModel: RecipesViewModel
 ) {
-    val navController = rememberNavController() // 创建 NavController
+    val navController = rememberNavController() // create NavController
     val backStackEntry = navController.currentBackStackEntryAsState()
     val currentRoute = backStackEntry.value?.destination?.route
     val snackbarHostState = remember { SnackbarHostState() } // create SnackbarHostState
     //val coroutineScope = rememberCoroutineScope()
+
+    LaunchedEffect(Unit) {
+        userViewModel.initUserIfLoggedIn()
+    }
+
     Scaffold(
         snackbarHost = { SnackbarHost(snackbarHostState) },
         topBar = {
@@ -78,7 +84,7 @@ fun AppScaffold(
                 composable(route = "login") { LoginScreen(navController=navController,modifier=modifier,userViewModel=userViewModel) }
                 composable(route = "info") { InfoScreen(modifier) }
                 composable(route = "settings") { SettingsScreen(modifier) }
-                composable(route = "profile") { ProfileScreen(modifier,userViewModel) }
+                composable(route = "profile") { ProfileScreen(navController,modifier,userViewModel) }
                 composable(route = "cart") { CartScreen(navController=navController,modifier=modifier,userViewModel = userViewModel) }
                 composable(route = "checkout") { CheckoutScreen(navController=navController,modifier=modifier,userViewModel = userViewModel) }
                 composable(route = "orders") { OrderScreen(navController=navController,modifier=modifier,userViewModel = userViewModel) }

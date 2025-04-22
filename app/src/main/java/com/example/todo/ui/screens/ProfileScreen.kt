@@ -47,17 +47,20 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
 import com.example.todo.viewmodel.UserViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProfileScreen(
+    navController: NavController,
     modifier: Modifier = Modifier,
     userViewModel: UserViewModel
 ) {
     // default avatar
     val user by userViewModel.user.collectAsState()
+    val userId = user?.userId
     var isEditing by remember { mutableStateOf(false) }
 
     var name by remember { mutableStateOf("") }
@@ -67,7 +70,11 @@ fun ProfileScreen(
     var phoneNumber by remember { mutableStateOf("") }
 
     LaunchedEffect(Unit) {
-        userViewModel.getCurrentUserId()?.let { userId ->
+        if (userId == null) {
+            navController.navigate("login") {
+                popUpTo("login") { inclusive = true }  // 清空返回栈，防止返回再进来
+            }
+        } else {
             userViewModel.loadUserData(userId)
         }
     }
@@ -89,7 +96,7 @@ fun ProfileScreen(
             }
         }
     )
-
+//
     LaunchedEffect(user) {
         user?.let {
             name = it.name
