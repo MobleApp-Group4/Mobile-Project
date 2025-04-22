@@ -57,7 +57,7 @@ fun InfoScreen(
                     .padding(vertical = 8.dp)
             )
             Text(
-                text = "Foodie Genie is a mobile app that brings personalized, high-end dining experiences directly to your door. Whether you're hosting a private dinner, a business event, or a family gathering, our app makes it easy to browse custom menus, book professional chefs, and arrange seamless culinary experiences. Specializing in Asian-inspired dishes, Foodie Genie focuses on using high-quality ingredients and offering expert chef services, transforming your home into a unique dining destination.",
+                text = "11Foodie Genie is a mobile app that brings personalized, high-end dining experiences directly to your door. Whether you're hosting a private dinner, a business event, or a family gathering, our app makes it easy to browse custom menus, book professional chefs, and arrange seamless culinary experiences. Specializing in Asian-inspired dishes, Foodie Genie focuses on using high-quality ingredients and offering expert chef services, transforming your home into a unique dining destination.",
                 fontSize = 16.sp,
                 modifier = Modifier
                     .fillMaxWidth()
