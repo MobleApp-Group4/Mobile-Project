@@ -29,14 +29,21 @@ fun CartScreen(
     userViewModel: UserViewModel,
     navController: NavController
 ) {
-    // 示例数据（通常应从 ViewModel 或 Repository 获取）
-    val user = FirebaseAuth.getInstance().currentUser
-    val userId = user?.uid
+    // get user info from userViewModel
+    val user by userViewModel.user.collectAsState()
+    val userId = user?.userId
+
+    if (userId == null) {
+        LaunchedEffect(Unit) {
+            navController.navigate("login") {
+                popUpTo("login") { inclusive = true }
+            }
+        }
+        return
+    }
 
     LaunchedEffect(userId){
-        if (userId != null) {
-            userViewModel.getCartItems(userId)
-        }
+        userViewModel.getCartItems(userId)
     }
     val cartItems by userViewModel.cartItems.collectAsState(emptyList())
     val filteredCartItems = cartItems.filter { it.quantity > 0 }

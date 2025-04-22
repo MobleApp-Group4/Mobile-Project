@@ -54,15 +54,6 @@ fun FavoriteScreen(
         }
     }
 
-    if (userId == null) {
-        Box(
-            modifier = Modifier.fillMaxSize(),
-            contentAlignment = Alignment.Center
-        ) {
-            Text(text = "Login Please")
-        }
-        return
-    }
     val favoriteRecipes = userViewModel.favoriteRecipes
     val filteredRecipes = favoriteRecipes.filter{
         it.title.contains(searchWord, ignoreCase = true)
