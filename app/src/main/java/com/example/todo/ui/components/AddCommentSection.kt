@@ -36,7 +36,7 @@ fun AddCommentSection(
 
         RatingBar(
             selectedRating = selectedRating,
-            onRatingSelected = { newRating -> selectedRating = newRating } // 这里更新 selectedRating
+            onRatingSelected = { newRating -> selectedRating = newRating } // Update selectedRating
         )
 
         Text(text = "Your Rating: $selectedRating", fontSize = 16.sp)
@@ -45,7 +45,7 @@ fun AddCommentSection(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        // 评论输入框
+        // Comment input box
         TextField(
             value = commentText,
             onValueChange = { commentText = it },
@@ -56,7 +56,7 @@ fun AddCommentSection(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        // 提交按钮
+        // The button of "submit"
         Button(
             onClick = {
                 recipesViewModel.addComment(
@@ -65,8 +65,8 @@ fun AddCommentSection(
                     rating = selectedRating.toDouble(),
                     text = commentText
                 )
-                commentText = ""  // 清空输入框
-                selectedRating = 0  // 重置评分
+                commentText = ""  // Empty the input box
+                selectedRating = 0  // Reset the score
             },
             modifier = Modifier.align(Alignment.End)
         ) {

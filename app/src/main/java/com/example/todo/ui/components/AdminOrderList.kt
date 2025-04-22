@@ -51,7 +51,7 @@ fun AdminOrderList(
             var selectedStatus by remember { mutableStateOf(order.status) }
             val statusOptions = listOf("Pending","In Progress", "Completed","Cancelled")
             val formattedDate = order.createdAt.toDate().let { date ->
-                SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault()).format(date) // ✅ 格式化日期
+                SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault()).format(date)
             } ?: "Unknown"
 
             var isEditingNote by remember { mutableStateOf(false) }
@@ -78,7 +78,7 @@ fun AdminOrderList(
                                     DropdownMenuItem(text = { Text(status) }, onClick = {
                                         selectedStatus = status
                                         expanded = false
-                                        userViewModel.updateOrderStatus(order.userId, order.orderId, status)  // 更新状态
+                                        userViewModel.updateOrderStatus(order.userId, order.orderId, status)  // Update status
                                     })
                                 }
                             }
@@ -102,7 +102,7 @@ fun AdminOrderList(
                         }
 
                         IconButton(onClick = {
-                            userViewModel.removeAdminOrder(order.userId,order.orderId) // 假设你有一个删除函数
+                            userViewModel.removeAdminOrder(order.userId,order.orderId) // Suppose you have a deletion function
                         }) {
                             Icon(
                                 imageVector = Icons.Default.Delete,
@@ -134,7 +134,7 @@ fun AdminOrderList(
                                 }
                             }
 
-                            // 备注内容显示或编辑
+                            // Note content display or editing
                             if (isEditingNote) {
                                 OutlinedTextField(
                                     value = noteText,
