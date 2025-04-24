@@ -31,7 +31,7 @@ import com.example.todo.viewmodel.UserViewModel
 @Composable
 fun AppScaffold(
     userViewModel: UserViewModel,
-    recipeViewModel: RecipesViewModel
+    recipesViewModel: RecipesViewModel
 ) {
     val navController = rememberNavController() // create NavController
     val backStackEntry = navController.currentBackStackEntryAsState()
@@ -80,7 +80,7 @@ fun AppScaffold(
                 navController = navController,
                 startDestination = "home"
             ) {
-                composable(route = "home") { RecipeScreen(navController,modifier,recipeViewModel)}
+                composable(route = "home") { RecipeScreen(navController,modifier,recipesViewModel)}
                 composable(route = "login") { LoginScreen(navController=navController,modifier=modifier,userViewModel=userViewModel) }
                 composable(route = "info") { InfoScreen(modifier) }
                 composable(route = "settings") { SettingsScreen(modifier) }
@@ -89,10 +89,10 @@ fun AppScaffold(
                 composable(route = "checkout") { CheckoutScreen(navController=navController,modifier=modifier,userViewModel = userViewModel) }
                 composable(route = "orders") { OrderScreen(navController=navController,modifier=modifier,userViewModel = userViewModel) }
 //                composable(route = "all_orders") { AdminOrderScreen(modifier=modifier) }
-                composable(route = "favorites") { FavoriteScreen(navController,modifier,userViewModel,recipeViewModel) }
+                composable(route = "favorites") { FavoriteScreen(navController,modifier,userViewModel,recipesViewModel) }
                 composable("recipes/{recipeId}") { backStackEntry ->
                     val recipeId = backStackEntry.arguments?.getString("recipeId")?.toInt() ?: 0
-                    RecipeDetailScreen(navController=navController,modifier=modifier,recipeId=recipeId,recipeViewModel = recipeViewModel,
+                    RecipeDetailScreen(navController=navController,modifier=modifier,recipeId=recipeId,recipesViewModel = recipesViewModel,
                         userViewModel = userViewModel)
                 }
 

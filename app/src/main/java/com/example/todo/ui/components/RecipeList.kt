@@ -25,6 +25,9 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -36,29 +39,41 @@ import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
 import com.example.todo.model.Recipe
 import com.example.todo.viewmodel.RecipesViewModel
+import com.example.todo.viewmodel.UserViewModel
 
 @Composable
-fun RecipeList(recipes: List<Recipe>,navController: NavController) {
+fun RecipeList(
+    recipes: List<Recipe>,
+    navController: NavController,
+    recipesViewModel: RecipesViewModel
+    ) {
     LazyColumn(
         modifier = Modifier.fillMaxSize()
     ) {
         items(recipes) { recipe ->
-            RecipeItem(recipe,navController)
+            RecipeItem(recipe,navController,recipesViewModel)
         }
     }
 }
 
 @Composable
-fun RecipeItem(recipe: Recipe,navController: NavController) {
-
-
+fun RecipeItem(
+    recipe: Recipe,
+    navController: NavController,
+    recipesViewModel: RecipesViewModel
+) {
+    val avgRating by recipesViewModel.avgRating.collectAsState()
+    val recipeId = recipe.id
+    LaunchedEffect(recipeId) {
+        recipesViewModel.getRecipeRating(recipeId.toString())
+    }
     Card(
         modifier = Modifier.padding(bottom = 16.dp),
     ) {
         Column(
             modifier = Modifier.padding(16.dp)
         ) {
-            // 电影封面
+            // recipe image
             Image(
                 painter = rememberAsyncImagePainter(recipe.image),
                 contentDescription = "Recipe Image",
@@ -70,7 +85,7 @@ fun RecipeItem(recipe: Recipe,navController: NavController) {
             )
             Spacer(modifier = Modifier.height(8.dp))
 
-            // 电影标题
+            // title
             Text(
                 text = recipe.title,
                 style = MaterialTheme.typography.headlineSmall.copy(fontSize = 22.sp),
@@ -85,7 +100,7 @@ fun RecipeItem(recipe: Recipe,navController: NavController) {
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween // 让评分在左，收藏按钮在右
             ) {
-                // 星星图标和评分文本
+                // star icon and rating
                 Row(
                     verticalAlignment = Alignment.CenterVertically // 垂直居中
                 ) {
@@ -97,7 +112,7 @@ fun RecipeItem(recipe: Recipe,navController: NavController) {
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
-                        text = "vote", // 这里可以替换为具体评分数据
+                        text = "$avgRating", // 这里可以替换为具体评分数据
                         style = MaterialTheme.typography.bodyMedium.copy(
                             color = Color.Gray,
                             fontSize = 20.sp // 设置较小的字体大小

@@ -26,13 +26,15 @@ import androidx.navigation.NavController
 import com.example.todo.ui.components.FilterChip
 import com.example.todo.ui.components.RecipeList
 import com.example.todo.viewmodel.RecipesViewModel
+import com.example.todo.viewmodel.UserViewModel
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun RecipeScreen(
     navController: NavController,
     modifier: Modifier = Modifier,
-    recipesViewModel: RecipesViewModel
+    recipesViewModel: RecipesViewModel,
+    //userViewModel: UserViewModel
 ) {
     val categories = listOf("Vegan","Vegetarian","Pescatarian","Primal","Whole30","DairyFree","Paleo","GlutenFree")
     var selectedCategory by remember { mutableStateOf<String?>(null) }
@@ -84,7 +86,7 @@ fun RecipeScreen(
                 Spacer(modifier = Modifier.weight(1f))
             }
         }
-        RecipeList(recipes=filteredRecipes,navController = navController)
+        RecipeList(recipes=filteredRecipes,navController = navController,recipesViewModel=recipesViewModel)
 
     }
 }

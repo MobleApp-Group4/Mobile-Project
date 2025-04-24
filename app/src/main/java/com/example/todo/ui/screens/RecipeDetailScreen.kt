@@ -61,7 +61,7 @@ import org.jsoup.Jsoup
 fun RecipeDetailScreen(
     recipeId: Int,
     navController: NavController,
-    recipeViewModel: RecipesViewModel,
+    recipesViewModel: RecipesViewModel,
     userViewModel: UserViewModel,
     modifier: Modifier = Modifier
 ) {
@@ -72,15 +72,15 @@ fun RecipeDetailScreen(
     val context = LocalContext.current // 获取当前 Context
 
     //fetch comments and rating
-    val comments by recipeViewModel.comments.collectAsState()
-    val avgRating by recipeViewModel.avgRating.collectAsState()
+    val comments by recipesViewModel.comments.collectAsState()
+    val avgRating by recipesViewModel.avgRating.collectAsState()
 
-    val recipeDetail = recipeViewModel.recipeDetail.value
+    val recipeDetail = recipesViewModel.recipeDetail.value
 
     LaunchedEffect(recipeId) {
-        recipeViewModel.fetchRecipeDetail(recipeId)
-        recipeViewModel.loadComments(recipeId.toString())
-        recipeViewModel.getRecipeRating(recipeId.toString())
+        recipesViewModel.fetchRecipeDetail(recipeId)
+        recipesViewModel.loadComments(recipeId.toString())
+        recipesViewModel.getRecipeRating(recipeId.toString())
     }
 
     LaunchedEffect(userId, recipeId) {
@@ -281,7 +281,7 @@ fun RecipeDetailScreen(
                     AddCommentSection(
                         recipeId = recipeId.toString(),
                         userId = userId ?: "",
-                        recipesViewModel = recipeViewModel
+                        recipesViewModel = recipesViewModel
                     )
                     Spacer(modifier = Modifier.height(70.dp))
                 }

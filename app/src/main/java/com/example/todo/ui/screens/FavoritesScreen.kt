@@ -80,7 +80,7 @@ fun FavoriteScreen(
             if (filteredRecipes.isEmpty()) {
                 Text(text = "No favorite recipes found.", modifier = modifier.padding(16.dp))
             } else {
-                RecipeList(recipes = filteredRecipes, navController = navController)
+                RecipeList(recipes = filteredRecipes, navController = navController,recipesViewModel=recipesViewModel)
             }
         }
     }
