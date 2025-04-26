@@ -96,29 +96,29 @@ fun RecipeItem(
             )
             Spacer(modifier = Modifier.weight(1f))
 
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween // 让评分在左，收藏按钮在右
-            ) {
-                // star icon and rating
-                Row(
-                    verticalAlignment = Alignment.CenterVertically // 垂直居中
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.Star,
-                        contentDescription = "Star Icon",
-                        tint = Color(0xFFFFD700), // 金黄色
-                        modifier = Modifier.size(20.dp)
-                    )
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Text(
-                        text = "$avgRating", // 这里可以替换为具体评分数据
-                        style = MaterialTheme.typography.bodyMedium.copy(
-                            color = Color.Gray,
-                            fontSize = 20.sp // 设置较小的字体大小
-                        )
-                    )
-                }
+//            Row(
+//                modifier = Modifier.fillMaxWidth(),
+//                horizontalArrangement = Arrangement.SpaceBetween // 让评分在左，收藏按钮在右
+//            ) {
+//                // star icon and rating
+//                Row(
+//                    verticalAlignment = Alignment.CenterVertically // 垂直居中
+//                ) {
+//                    Icon(
+//                        imageVector = Icons.Default.Star,
+//                        contentDescription = "Star Icon",
+//                        tint = Color(0xFFFFD700), // 金黄色
+//                        modifier = Modifier.size(20.dp)
+//                    )
+//                    Spacer(modifier = Modifier.width(8.dp))
+//                    Text(
+//                        text = "$avgRating", // 这里可以替换为具体评分数据
+//                        style = MaterialTheme.typography.bodyMedium.copy(
+//                            color = Color.Gray,
+//                            fontSize = 20.sp // 设置较小的字体大小
+//                        )
+//                    )
+//                }
 
                 // 收藏按钮
 //                IconButton(onClick = { /* 添加收藏逻辑 */ }) {
@@ -128,7 +128,7 @@ fun RecipeItem(
 //                        tint = Color.Gray // 收藏图标颜色
 //                    )
 //                }
-            }
+            //}
         }
     }
 }

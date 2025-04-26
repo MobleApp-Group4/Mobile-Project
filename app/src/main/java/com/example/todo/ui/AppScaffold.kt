@@ -56,6 +56,7 @@ fun AppScaffold(
                 "recipes/{recipeId}" -> ScreenTopBar("Recipes",navController)
                 "checkout" -> ScreenTopBar("Confirm Orders",navController)
                 "orders" -> ScreenTopBar("Orders",navController)
+                //"Sign In/Sign Up" -> ScreenTopBar("Login",navController)
                 "all_orders" -> ScreenTopBar("Manage All Orders",navController)
                 else -> TopBar(navController)
             }
