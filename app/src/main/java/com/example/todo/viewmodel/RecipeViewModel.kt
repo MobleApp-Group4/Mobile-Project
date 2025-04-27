@@ -124,7 +124,7 @@ class RecipesViewModel:  ViewModel()  {
 
         commentsRef.get().addOnSuccessListener { snapshot ->
             if (!snapshot.isEmpty) {
-                val ratings = snapshot.documents.mapNotNull { it.getLong("rating")?.toDouble() }
+                val ratings = snapshot.documents.mapNotNull { it.getDouble("rating") }
 
                 if (ratings.isNotEmpty()) {
                     val avgRating = (ratings.average() * 10).roundToInt() / 10.0  // ✅ 保留 1 位小数
@@ -163,6 +163,7 @@ class RecipesViewModel:  ViewModel()  {
                         _avgRating.value = avgRating
                         Log.d("Firestore", "Fetched averageRating: $avgRating")
                     } else {
+                        _avgRating.value = -1.0
                         Log.e("Firestore", "Recipe document does not exist")
                     }
                 }
@@ -179,6 +180,7 @@ class RecipesViewModel:  ViewModel()  {
                     Log.e("Firestore", "Error loading comments: ${error.message}")
                     return@addSnapshotListener
                 }
+
 
                 val newComments = snapshot?.documents?.mapNotNull { it.toObject(Comment::class.java) } ?: emptyList()
                 viewModelScope.launch {
