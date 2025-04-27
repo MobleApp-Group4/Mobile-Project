@@ -69,7 +69,7 @@ fun RecipeDetailScreen(
     val user = FirebaseAuth.getInstance().currentUser
     val userId = user?.uid
     val isFavorite = remember { mutableStateOf(false) }
-    val context = LocalContext.current // 获取当前 Context
+    val context = LocalContext.current // get Context
 
     //fetch comments and rating
     val comments by recipesViewModel.comments.collectAsState()
@@ -99,16 +99,16 @@ fun RecipeDetailScreen(
 
         Box(
             modifier = modifier
-                .fillMaxSize() // 使用Box填充整个屏幕
+                .fillMaxSize()
         ){
-            LazyColumn( // ✅ 让整个页面支持滚动
+            LazyColumn(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(16.dp)
-                    .padding(bottom = 80.dp), // 预留空间，避免 BottomBar 遮挡内容
+                    .padding(bottom = 80.dp), //
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-                // 显示食谱图片
+                // image
                 item {
                     Image(
                         painter = rememberAsyncImagePainter(recipeDetail.image),
@@ -142,7 +142,7 @@ fun RecipeDetailScreen(
                     }
                 }
 
-
+                //title
                 item {
                     Text(
                         text = recipeDetail.title,
@@ -150,12 +150,14 @@ fun RecipeDetailScreen(
                     )
                 }
 
+                //rating and favorite
                 item{
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
+                        //rating
                         Row(
                             verticalAlignment = Alignment.CenterVertically // 垂直居中
                         ) {
@@ -167,7 +169,7 @@ fun RecipeDetailScreen(
                             )
                             Spacer(modifier = Modifier.width(8.dp))
                             Text(
-                                text = "$avgRating",
+                                text = if (avgRating == -1.0) "No Rating Yet" else "$avgRating",
                                 style = MaterialTheme.typography.bodyMedium.copy(
                                     fontSize = 24.sp
                                 )
