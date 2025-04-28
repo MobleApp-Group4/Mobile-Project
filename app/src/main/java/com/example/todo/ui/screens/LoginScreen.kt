@@ -117,6 +117,33 @@ fun LoginScreen(
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
             modifier = Modifier.fillMaxWidth()
         )
+        Spacer(modifier = Modifier.height(16.dp))
+
+        TextButton(
+            onClick = {
+                if (email.isNotBlank()) {
+                    userViewModel.resetPassword(email) { success, error ->
+                        if (success) {
+                            Toast.makeText(
+                                context,
+                                "Reset email sent! Please check your inbox.",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        } else {
+                            Toast.makeText(
+                                context,
+                                "Failed to send reset email: $error",
+                                Toast.LENGTH_LONG
+                            ).show()
+                        }
+                    }
+                } else {
+                    Toast.makeText(context, "Please enter your email first.", Toast.LENGTH_SHORT).show()
+                }
+            }
+        ) {
+            Text("Forgot Password?")
+        }
         Spacer(modifier = Modifier.height(32.dp))
 
         Button(
