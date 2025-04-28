@@ -202,6 +202,20 @@ class UserViewModel:  ViewModel()  {
         }
     }
 
+    //reset password
+    fun resetPassword(email: String, onResult: (Boolean, String?) -> Unit) {
+        auth.sendPasswordResetEmail(email)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    Log.d("resetPassword", "Password reset email sent.")
+                    onResult(true, null)
+                } else {
+                    Log.e("resetPassword", "Failed to send password reset email", task.exception)
+                    onResult(false, task.exception?.message)
+                }
+            }
+    }
+
 
     fun logout() {
         auth.signOut()
