@@ -59,6 +59,13 @@ Add screenshots here for key pages like Home, Cart, Profile, Orders
 
 ## 📚 Pages Overview
 
+### 🔐Sign In & Sign Up Page
+Supports user authentication with two methods:
+- **Email & Password**: Users can log in or register using traditional credentials.
+- **Google Sign-In**: One-tap login using their Google account.
+Upon successful login or sign-up, users are redirected to the home screen. Basic validation and error handling are included.
+**Related File:** `LoginScreen.kt`
+
 ### 🏠 Recipes Page (Home Page)
 Displays a list of recipes with a search bar and diet-based chips filter.
 **Related File:** `RecipeScreen.kt`
@@ -267,8 +274,8 @@ Below is the folder structure of the **Foodie Genie** project:
 │   │   
 │   ├── 📁 theme/                  
 │   │
-│   ├── 📄 MainActivity.kt
-│   └── 📄 AppScaffold.kt
+│   ├── MainActivity.kt
+│   └── AppScaffold.kt
 │
 └── 📁 viewmodel/                     
     ├── RecipeViewModel.kt
