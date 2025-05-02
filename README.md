@@ -7,12 +7,15 @@ FoodieGenie is a modern recipe discovery and shopping assistant app built for An
 - [🧪 Features](#-features)
 - [🖼️ App UI Preview](#-app-ui-preview)
 - [📚 Pages Overview](#-pages-overview)
-    - [🔍 Recipe Page](#-recipes-page-home-page)
+    - [🔐 Sign In & Sign Up Page](#sign-in--sign-up-page)
+    - [🏠 Home Page](#-recipes-page-home-page)
+    - [🔍 Recipe Detail Page](#-recipe-detail-page)
     - [❤️ Favorites Page](#-favorites-page)
     - [🛒 Cart Page](#-cart-page)
-    - [ Check Out Page]()
+    - [💳 Checkout Page](#-checkout-page)
     - [🧾 Orders Page](#-orders-page)
     - [👤 Profile Page](#-profile-page)
+    - [ℹ️ Info Page](#ℹ-info-page)
     - [⚙️ Settings Page](#-settings-page)
 - 🧩 [Technologies Used](#-technologies-used)
 - 🔥 [Firebase Setup & Configuration](#-firebase-setup-and-configuration)
@@ -21,7 +24,7 @@ FoodieGenie is a modern recipe discovery and shopping assistant app built for An
 - 📜 [License](#-license)
 - 👥 [Author](#-author)
 
--
+---
 
 ## 📱 Installation & Quick Start
 
@@ -70,7 +73,7 @@ Upon successful login or sign-up, users are redirected to the home screen. Basic
 Displays a list of recipes with a search bar and diet-based chips filter.
 **Related File:** `RecipeScreen.kt`
 
-### 🔍 Recipe Info Page
+### 🔍 Recipe Detail Page
 Browse recipes from a remote API and view detailed ingredients, instructions, and images.
 **Related File:** `RecipeDetailScreen.kt`
 
