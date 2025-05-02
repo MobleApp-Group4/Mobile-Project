@@ -2,7 +2,7 @@
 FoodieGenie is a modern recipe discovery and shopping assistant app built for Android using Jetpack Compose and Firebase. It enables users to explore meals, add recipes to cart, place orders, and manage their profiles — all in a sleek, role-aware interface with support for both regular users and admins.
 
 ## 📑 Table of Contents
-- [📱Installation](#-installation--quick-start)
+- [📱Installation](#)
 - [👨🏻‍🏫 Introduction](#-introduction)
 - [🧪 Features](#-features)
 - [🖼️ App UI Preview](#-app-ui-preview)
@@ -22,21 +22,21 @@ FoodieGenie is a modern recipe discovery and shopping assistant app built for An
 - 👥 Author
 
 
-**###** 📱 Installation & Quick Start
+### 📱 Installation & Quick Start
 
-**####** Step 1. Clone the Repository
+#### Step 1. Clone the Repository
    git clone https://github.com/MobleApp-Group4/Mobile-Project.git
-**####** Step 2. Open in Android Studio
+#### Step 2. Open in Android Studio
 - Make sure Kotlin and Android SDK 33+ are installed
 - Place your google-services.json file inside the app/ directory
-**####** Step 3. Run the App
+#### Step 3. Run the App
 - Click "Run" in Android Studio
 - Or use command line:
 
-**###** 👨🏻‍🏫 Introduction
+### 👨🏻‍🏫 Introduction
 FoodieGenie is a user-centric food and recipe app that integrates with Firebase for real-time authentication, storage, and data syncing. The app supports browsing curated recipes, adding them to a cart, placing orders, and even offers admin-level views for managing all orders.
 
-**###** 🧪 Features
+### 🧪 Features
 
 - 🔐 Firebase Authentication (Email + Google)
 - 🍽 Browse curated recipes from API
@@ -51,35 +51,35 @@ FoodieGenie is a user-centric food and recipe app that integrates with Firebase 
 - ☁️ Integrated with Firebase for real-time user data
 - 🌙 Dark mode support
 
-**###** 🖼️ App UI Preview
+### 🖼️ App UI Preview
 Add screenshots here for key pages like Home, Cart, Profile, Orders
 
-**###** 📚 Pages Overview
+### 📚 Pages Overview
 
-**####** 🏠 Recipes Page (Home Page)
+#### 🏠 Recipes Page (Home Page)
 Displays a list of recipes with a search bar and diet-based chips filter.
 
-**####** 🔍 Recipe Info Page
+#### 🔍 Recipe Info Page
 Browse recipes from a remote API and view detailed ingredients, instructions, and images.
 
-**####** ❤️ Favorites Page
+#### ❤️ Favorites Page
 View your favorited recipes and navigate back to their details.
 
-**####** 🛒 Cart Page
+#### 🛒 Cart Page
 See selected recipes, adjust quantities, remove items, and proceed to checkout.
 
-**####** 🧾 Orders Page
+#### 🧾 Orders Page
 Users: View your own order history
 
-**####** Admins: View and manage all orders placed by users
+#### Admins: View and manage all orders placed by users
 
-**####** 👤 Profile Page
+#### 👤 Profile Page
 Edit user information including name, address, gender, and upload a profile picture.
 
-**####** ⚙️ Settings Page
+#### ⚙️ Settings Page
 Basic settings and logout functionality.
 
-**###** 🧪 Technologies Used
+### 🧪 Technologies Used
 | Technology                        | Description                                                                                                 |
 | --------------------------------- | ----------------------------------------------------------------------------------------------------------- |
 | **Kotlin**                        | Main programming language for Android development. Offers type safety, null safety, and concise syntax.     |
@@ -97,15 +97,15 @@ Basic settings and logout functionality.
 
 
 
-**###** 🔥 Firebase Setup and Configuration
+### 🔥 Firebase Setup and Configuration
 
 The **Foodie Genie** app uses Firebase for its backend services, managing user accounts, order processing, shopping cart storage, recipe comments, and personalized user data like favorites. Below is an overview of how Firebase and Firestore are integrated into the project.
 
 ---
 
-**####** 📚 Firestore Database
+#### 📚 Firestore Database
 
-**#####** 🔹 `users` Collection
+##### 🔹 `users` Collection
 
 Each document represents a single user and includes:
 
@@ -119,7 +119,7 @@ This collection stores the user's profile and general information.
 
 ---
 
-**######** 🔹 `favorites` Subcollection
+###### 🔹 `favorites` Subcollection
 
 Located inside each user document: `users/{userId}/favorites`
 
@@ -131,7 +131,7 @@ This allows users to "like" or bookmark recipes for easy access later.
 
 ---
 
-**######** 🔹 `cart` Subcollection
+###### 🔹 `cart` Subcollection
 
 Located inside: `users/{userId}/cart`
 
@@ -145,7 +145,7 @@ Used to build a shopping cart before placing an order.
 
 ---
 
-**######** 🔹 `orders` Subcollection
+###### 🔹 `orders` Subcollection
 
 Located inside: `users/{userId}/orders`
 
@@ -162,7 +162,7 @@ Orders track a user's checkout history and delivery schedule.
 
 ---
 
-**#####** 🔹 `recipes` Collection *(Optional)*
+##### 🔹 `recipes` Collection *(Optional)*
 
 Optionally stores basic recipe data fetched from an external API.
 
