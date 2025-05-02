@@ -71,8 +71,8 @@ Supports user authentication with two methods:
 Upon successful login or sign-up, users are redirected to the home screen. Basic validation and error handling are included.
 **Related File:** `LoginScreen.kt`
 <p float="left">
-  <img src="./screenshots/signin.png" height="180px" style="margin: 5px;"/>
-  <img src="./screenshots/signup.png" height="180px" style="margin: 5px;"/>
+  <img src="./screenshots/signin.png" height="400px" style="margin: 5px;"/>
+  <img src="./screenshots/signup.png" height="400px" style="margin: 5px;"/>
 </p>
 
 
