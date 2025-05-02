@@ -70,8 +70,11 @@ Supports user authentication with two methods:
 - **Google Sign-In**: One-tap login using their Google account.
 Upon successful login or sign-up, users are redirected to the home screen. Basic validation and error handling are included.
 **Related File:** `LoginScreen.kt`
-- ![SignIn](./screenshots/signin.png)
-  ![SignIn](./screenshots/signup.png)
+<p float="left">
+  <img src="./screenshots/signin.png" width="30%" />
+  <img src="./screenshots/signup.png" width="30%" />
+</p>
+
 
 ### 🏠 Recipes Page (Home Page)
 Displays a list of recipes with a search bar and diet-based chips filter.
