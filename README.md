@@ -2,7 +2,7 @@
 FoodieGenie is a modern recipe discovery and shopping assistant app built for Android using Jetpack Compose and Firebase. It enables users to explore meals, add recipes to cart, place orders, and manage their profiles — all in a sleek, role-aware interface with support for both regular users and admins.
 
 ## 📑 Table of Contents
-- [📱Installation](#)
+- [📱Installation & Quick Start](#-installation--quick-start)
 - [👨🏻‍🏫 Introduction](#-introduction)
 - [🧪 Features](#-features)
 - [🖼️ App UI Preview](#-app-ui-preview)
@@ -15,7 +15,7 @@ FoodieGenie is a modern recipe discovery and shopping assistant app built for An
     - [👤 Profile Page](#-profile-page)
     - [⚙️ Settings Page](#-settings-page)
 - 🧩 [Technologies Used](#-technologies-used)
-- 🔥 Firebase Setup
+- 🔥 [Firebase Setup & Configuration](#-firebase-setup-and-configuration)
 - 📂 Folder Structure
 - 🛠️ Contribution
 - 📜 License
@@ -201,3 +201,58 @@ If detailed recipe info needs to be stored persistently:
 Useful for enabling offline access or analytics.
 
 ---
+
+📦 foodiegenie/
+│
+├── 📁 api/
+│   └── RecipesApi.kt
+│ 
+│── 📁 model/                  
+│       └── Recipe.kt
+├── 📁 ui/
+│   ├── 📁 appbars/            
+│   │   ├── BottomBar.kt
+│   │   ├── DetailBottomBar.kt
+│   │   ├── HomeTopBar.kt
+│   │   ├── OrdersTabBar.kt
+│   │   ├── ScreenTopBar.kt
+│   │   ├── TabItem.kt
+│   │   └── TopBar.kt
+│   │
+│   ├── 📁 components/             
+│   │   ├── AddCommentSection.kt
+│   │   ├── AdminOrderList.kt
+│   │   ├── CartItem.kt
+│   │   ├── CommentList.kt
+│   │   ├── FilterChip.kt
+│   │   ├── RatingBar.kt
+│   │   ├── RecipeList.kt
+│   │   └── UserOderList.kt
+│   │  
+│   ├── 📁 screens/                
+│   │   ├── AdminOrderScreen.kt
+│   │   ├── CartScreen.kt
+│   │   ├── CheckoutScreen.kt
+│   │   ├── ErrorScreen.kt
+│   │   ├── FavoriteScreen.kt
+│   │   ├── InfoScreen.kt
+│   │   ├── LoadingScreen.kt
+│   │   ├── LoginScreen.kt
+│   │   ├── OrderScreen.kt
+│   │   ├── ProfileScreen.kt
+│   │   ├── RecipeDetailScreen.kt
+│   │   ├── RecipeScreen.kt
+│   │   ├── SettingsScreen.kt
+│   │   └── UserOrderScreen.kt
+│   │   
+│   ├── 📁 theme/                  
+│   │
+│   ├── 📄 MainActivity.kt
+│   └── 📄 AppScaffold.kt
+│
+└── 📁 viewmodel/                     
+    ├── RecipeViewModel.kt
+    └── UserViewModel.kt
+
+       
+
