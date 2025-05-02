@@ -29,7 +29,9 @@ FoodieGenie is a modern recipe discovery and shopping assistant app built for An
 ## 📱 Installation & Quick Start
 
 ### Step 1. Clone the Repository
+```plaintext
    git clone https://github.com/MobleApp-Group4/Mobile-Project.git
+   ```
 ### Step 2. Open in Android Studio
 - Make sure Kotlin and Android SDK 33+ are installed
 - Place your google-services.json file inside the app/ directory
@@ -68,6 +70,8 @@ Supports user authentication with two methods:
 - **Google Sign-In**: One-tap login using their Google account.
 Upon successful login or sign-up, users are redirected to the home screen. Basic validation and error handling are included.
 **Related File:** `LoginScreen.kt`
+- ![SignIn](./screenshots/signin.png)
+  ![SignIn](./screenshots/signup.png)
 
 ### 🏠 Recipes Page (Home Page)
 Displays a list of recipes with a search bar and diet-based chips filter.
@@ -120,7 +124,7 @@ A loading indicator shown during data fetching or processing.
 
 ## 🧪 Technologies Used
 | Technology                        | Description                                                                                                 |
-| --------------------------------- | ----------------------------------------------------------------------------------------------------------- |
+|-----------------------------------| ----------------------------------------------------------------------------------------------------------- |
 | **Kotlin**                        | Main programming language for Android development. Offers type safety, null safety, and concise syntax.     |
 | **Jetpack Compose**               | Android’s modern declarative UI toolkit used to build reactive and efficient UI components (`@Composable`). |
 | **ViewModel (Android Jetpack)**   | Manages UI-related data in a lifecycle-conscious way. Ensures data survives configuration changes.          |
@@ -128,10 +132,11 @@ A loading indicator shown during data fetching or processing.
 | **Navigation Component**          | Facilitates type-safe screen-to-screen navigation with back stack management.                               |
 | **Firebase Authentication**       | Handles user login, registration, and session management securely.                                          |
 | **Firebase Firestore**            | Cloud-hosted NoSQL database used for storing user profiles, cart data, orders, and more.                    |
+| **Firebase Storage**              | Used for uploading and serving user profile avatars.                                                        |
 | **Material 3 Components**         | Google's modern design system used for UI elements like buttons, chips, dialogs, etc.                       |
 | **DatePickerDialog**              | Native Android component for selecting date inputs in `CheckoutScreen`.                                     |
-| **Coil (via painterResource)**    | Efficient image loading from network, used for displaying user avatars and recipe images.                                           |
-| **FlowRow (Compose Foundation)**  | For wrapping filter chips responsively in `RecipeScreen`.                                                   |
+| **Coil (via painterResource)**    | Efficient image loading from network, used for displaying user avatars and recipe images.                   |
+| **FlowRow (Compose Foundation)**  | For laying out components in a responsive horizontal flow (e.g., filter chips, tag lists, etc.)             |
 | **MutableState + remember{}**     | Local state handling in Compose for fields like address, note, date, etc.                                   |
 
 
