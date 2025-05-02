@@ -255,8 +255,8 @@ Fork the repository.
 Create a new branch (git checkout -b feature/your-feature).
 Commit your changes (git commit -am 'Add new feature').
 Push and submit a PR 
----
 
+---
 ### 📜 License
 This project is licensed under the MIT License - see the LICENSE file for details.
 
@@ -264,8 +264,8 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 ### 👥 Author
 Developed for university project by:
 
-👨‍💻 [Yiling Chen]
-👨‍💻 [Yue Chen]
-👨‍💻 [Ke Zhang]
+- Yiling Chen
+- Yue Chen
+- Ke Zhang
 
 
