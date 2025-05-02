@@ -20,7 +20,7 @@ FoodieGenie is a modern recipe discovery and shopping assistant app built for An
 - 🛠️ Contribution
 - 📜 License
 - 👥 Author
-
+---
 
 ### 📱 Installation & Quick Start
 
@@ -32,9 +32,11 @@ FoodieGenie is a modern recipe discovery and shopping assistant app built for An
 #### Step 3. Run the App
 - Click "Run" in Android Studio
 - Or use command line:
+---
 
 ### 👨🏻‍🏫 Introduction
 FoodieGenie is a user-centric food and recipe app that integrates with Firebase for real-time authentication, storage, and data syncing. The app supports browsing curated recipes, adding them to a cart, placing orders, and even offers admin-level views for managing all orders.
+---
 
 ### 🧪 Features
 
@@ -96,12 +98,11 @@ Basic settings and logout functionality.
 | **MutableState + remember{}**     | Local state handling in Compose for fields like address, note, date, etc.                                   |
 
 
-
+---
 ### 🔥 Firebase Setup and Configuration
 
 The **Foodie Genie** app uses Firebase for its backend services, managing user accounts, order processing, shopping cart storage, recipe comments, and personalized user data like favorites. Below is an overview of how Firebase and Firestore are integrated into the project.
 
----
 
 #### 📚 Firestore Database
 
@@ -117,7 +118,6 @@ Each document represents a single user and includes:
 
 This collection stores the user's profile and general information.
 
----
 
 ###### 🔹 `favorites` Subcollection
 
@@ -128,8 +128,6 @@ Each document represents a recipe that the user has favorited.
 * `recipeId`: ID of the recipe
 
 This allows users to "like" or bookmark recipes for easy access later.
-
----
 
 ###### 🔹 `cart` Subcollection
 
@@ -142,8 +140,6 @@ Each document represents a recipe item the user wants to purchase.
 * `quantity`: Number of servings ordered
 
 Used to build a shopping cart before placing an order.
-
----
 
 ###### 🔹 `orders` Subcollection
 
@@ -160,8 +156,6 @@ Each document represents a full user order.
 
 Orders track a user's checkout history and delivery schedule.
 
----
-
 ##### 🔹 `recipes` Collection *(Optional)*
 
 Optionally stores basic recipe data fetched from an external API.
@@ -169,8 +163,6 @@ Optionally stores basic recipe data fetched from an external API.
 * `id`, `title`, `image`: Recipe preview info
 
 This enables local caching or advanced features like search/sort/filter.
-
----
 
 ### 🔹 `comments` Subcollection
 
@@ -185,8 +177,6 @@ Each document is a user review on a specific recipe.
 * `likes`: Number of likes for the comment
 
 This supports community feedback and rating systems for recipes.
-
----
 
 ### 🔹 `recipeDetails` Collection *(Optional)*
 
@@ -257,6 +247,6 @@ Below is the folder structure of the **Foodie Genie** project:
     ├── RecipeViewModel.kt
     └── UserViewModel.kt
 
-
-       
+```
+---
 
