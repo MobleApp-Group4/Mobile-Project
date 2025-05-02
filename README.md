@@ -35,7 +35,7 @@ FoodieGenie is a modern recipe discovery and shopping assistant app built for An
 ---
 
 ### 👨🏻‍🏫 Introduction
-FoodieGenie is a user-centric food and recipe app that integrates with Firebase for real-time authentication, storage, and data syncing. The app supports browsing curated recipes, adding them to a cart, placing orders, and even offers admin-level views for managing all orders.
+- FoodieGenie is a user-centric food and recipe app that integrates with Firebase for real-time authentication, storage, and data syncing. The app supports browsing curated recipes, adding them to a cart, placing orders, and even offers admin-level views for managing all orders.
 ---
 
 ### 🧪 Features
@@ -249,4 +249,23 @@ Below is the folder structure of the **Foodie Genie** project:
 
 ```
 ---
+
+### 🤝 Contributing
+Fork the repository.
+Create a new branch (git checkout -b feature/your-feature).
+Commit your changes (git commit -am 'Add new feature').
+Push and submit a PR 
+---
+
+### 📜 License
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+---
+### 👥 Author
+Developed for university project by:
+
+👨‍💻 [Yiling Chen]
+👨‍💻 [Yue Chen]
+👨‍💻 [Ke Zhang]
+
 
