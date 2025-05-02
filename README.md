@@ -254,5 +254,58 @@ Useful for enabling offline access or analytics.
     ├── RecipeViewModel.kt
     └── UserViewModel.kt
 
+📦 foodiegenie/
+│
+├── 📁 api/
+│   └── RecipesApi.kt         # API interactions for fetching recipe data
+│
+├── 📁 model/                  # Data models representing the application structure
+│   └── Recipe.kt              # Data class for a Recipe
+│
+├── 📁 ui/                     # All UI components and screens
+│   ├── 📁 appbars/            # Custom top and bottom app bars
+│   │   ├── BottomBar.kt       # Bottom navigation bar
+│   │   ├── DetailBottomBar.kt # Bottom bar for recipe detail screen
+│   │   ├── HomeTopBar.kt      # Top bar for Home screen
+│   │   ├── OrdersTabBar.kt    # Tab bar for orders section
+│   │   ├── ScreenTopBar.kt    # Generic screen top bar
+│   │   ├── TabItem.kt         # Tab item component
+│   │   └── TopBar.kt          # Standard app bar
+│   │
+│   ├── 📁 components/         # Reusable UI components
+│   │   ├── AddCommentSection.kt # Comment section UI component
+│   │   ├── AdminOrderList.kt  # Admin's order list UI
+│   │   ├── CartItem.kt        # Individual cart item UI
+│   │   ├── CommentList.kt     # List of comments UI
+│   │   ├── FilterChip.kt      # Filter chip for recipes
+│   │   ├── RatingBar.kt       # Star rating bar UI
+│   │   ├── RecipeList.kt      # List of recipes UI
+│   │   └── UserOrderList.kt   # User's order list UI
+│   │  
+│   ├── 📁 screens/            # Each screen in the app
+│   │   ├── AdminOrderScreen.kt    # Admin order management screen
+│   │   ├── CartScreen.kt         # Cart management screen
+│   │   ├── CheckoutScreen.kt     # Checkout process screen
+│   │   ├── ErrorScreen.kt        # Error handling UI screen
+│   │   ├── FavoriteScreen.kt     # Favorite recipes screen
+│   │   ├── InfoScreen.kt         # Information screen (e.g. terms & privacy)
+│   │   ├── LoadingScreen.kt      # Loading UI screen
+│   │   ├── LoginScreen.kt        # User login screen
+│   │   ├── OrderScreen.kt        # Order details screen
+│   │   ├── ProfileScreen.kt      # User profile screen
+│   │   ├── RecipeDetailScreen.kt # Recipe detail screen
+│   │   ├── RecipeScreen.kt       # Recipe listing screen
+│   │   ├── SettingsScreen.kt     # App settings screen
+│   │   └── UserOrderScreen.kt    # User's order history screen
+│   │   
+│   ├── 📁 theme/                # Theme files and UI styles
+│   │
+│   ├── 📄 MainActivity.kt        # App entry point
+│   └── 📄 AppScaffold.kt         # Basic app scaffold with navigation
+│
+└── 📁 viewmodel/                 # ViewModels for UI data handling
+    ├── RecipeViewModel.kt        # ViewModel for recipe-related logic
+    └── UserViewModel.kt          # ViewModel for user-related logic
+
        
 
