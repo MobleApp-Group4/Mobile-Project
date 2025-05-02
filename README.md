@@ -16,29 +16,30 @@ FoodieGenie is a modern recipe discovery and shopping assistant app built for An
     - [⚙️ Settings Page](#-settings-page)
 - 🧩 [Technologies Used](#-technologies-used)
 - 🔥 [Firebase Setup & Configuration](#-firebase-setup-and-configuration)
-- 📂 Folder Structure
-- 🛠️ Contribution
-- 📜 License
-- 👥 Author
----
+- 📂 [Folder Structure](#-folder-structure)
+- 🛠️ [Contribution](#-contributing)
+- 📜 [License](#-license)
+- 👥 [Author](#-author)
 
-### 📱 Installation & Quick Start
+-
 
-#### Step 1. Clone the Repository
+## 📱 Installation & Quick Start
+
+### Step 1. Clone the Repository
    git clone https://github.com/MobleApp-Group4/Mobile-Project.git
-#### Step 2. Open in Android Studio
+### Step 2. Open in Android Studio
 - Make sure Kotlin and Android SDK 33+ are installed
 - Place your google-services.json file inside the app/ directory
-#### Step 3. Run the App
+### Step 3. Run the App
 - Click "Run" in Android Studio
 - Or use command line:
 ---
 
-### 👨🏻‍🏫 Introduction
+## 👨🏻‍🏫 Introduction
 - FoodieGenie is a user-centric food and recipe app that integrates with Firebase for real-time authentication, storage, and data syncing. The app supports browsing curated recipes, adding them to a cart, placing orders, and even offers admin-level views for managing all orders.
 ---
 
-### 🧪 Features
+## 🧪 Features
 
 - 🔐 Firebase Authentication (Email + Google)
 - 🍽 Browse curated recipes from API
@@ -53,35 +54,61 @@ FoodieGenie is a modern recipe discovery and shopping assistant app built for An
 - ☁️ Integrated with Firebase for real-time user data
 - 🌙 Dark mode support
 
-### 🖼️ App UI Preview
+## 🖼️ App UI Preview
 Add screenshots here for key pages like Home, Cart, Profile, Orders
 
-### 📚 Pages Overview
+## 📚 Pages Overview
 
-#### 🏠 Recipes Page (Home Page)
+### 🏠 Recipes Page (Home Page)
 Displays a list of recipes with a search bar and diet-based chips filter.
+**Related File:** `RecipeScreen.kt`
 
-#### 🔍 Recipe Info Page
+### 🔍 Recipe Info Page
 Browse recipes from a remote API and view detailed ingredients, instructions, and images.
+**Related File:** `RecipeDetailScreen.kt`
 
-#### ❤️ Favorites Page
+### ❤️ Favorites Page
 View your favorited recipes and navigate back to their details.
+**Related File:** `FavoriteScreen.kt`
 
-#### 🛒 Cart Page
+### 🛒 Cart Page
 See selected recipes, adjust quantities, remove items, and proceed to checkout.
+**Related File:** `CartScreen.kt`
 
-#### 🧾 Orders Page
-Users: View your own order history
+### 💳 Checkout Page
+Final step in the ordering process. Users enter delivery details (address, date, time slot, phone number, optional note) and place an order.
+**Related File:** `CheckoutScreen.kt`
 
-#### Admins: View and manage all orders placed by users
+### 🧾 Orders Page
+- **For Users:** View your own order history, including status and order details.
+- **For Admins:** View, manage, and update all orders placed by users.
 
-#### 👤 Profile Page
+**Related Files:**
+- `UserOrderScreen.kt`
+- `AdminOrderScreen.kt`
+- `OrderScreen.kt`
+
+### 👤 Profile Page
 Edit user information including name, address, gender, and upload a profile picture.
+**Related File:** `ProfileScreen.kt`
 
-#### ⚙️ Settings Page
+### ℹ️ Info Page
+Static screen for showing terms of service, privacy policy, or app information.
+**Related File:** `LoginScreen.kt`
+
+### ⚙️ Settings Page
 Basic settings and logout functionality.
+**Related File:** `SettingsScreen.kt`
 
-### 🧪 Technologies Used
+### 🛠 Error Page
+Displays UI when an error occurs (e.g., network failure).
+**Related File:** `ErrorScreen.kt`
+
+### 🔄 Loading Page
+A loading indicator shown during data fetching or processing.
+**Related File:** `LoadingScreen.kt`
+
+## 🧪 Technologies Used
 | Technology                        | Description                                                                                                 |
 | --------------------------------- | ----------------------------------------------------------------------------------------------------------- |
 | **Kotlin**                        | Main programming language for Android development. Offers type safety, null safety, and concise syntax.     |
@@ -99,14 +126,14 @@ Basic settings and logout functionality.
 
 
 ---
-### 🔥 Firebase Setup and Configuration
+## 🔥 Firebase Setup and Configuration
 
 The **Foodie Genie** app uses Firebase for its backend services, managing user accounts, order processing, shopping cart storage, recipe comments, and personalized user data like favorites. Below is an overview of how Firebase and Firestore are integrated into the project.
 
 
-#### 📚 Firestore Database
+### 📚 Firestore Database
 
-##### 🔹 `users` Collection
+#### 🔹 `users` Collection
 
 Each document represents a single user and includes:
 
@@ -119,7 +146,7 @@ Each document represents a single user and includes:
 This collection stores the user's profile and general information.
 
 
-###### 🔹 `favorites` Subcollection
+##### 🔹 `favorites` Subcollection
 
 Located inside each user document: `users/{userId}/favorites`
 
@@ -129,7 +156,7 @@ Each document represents a recipe that the user has favorited.
 
 This allows users to "like" or bookmark recipes for easy access later.
 
-###### 🔹 `cart` Subcollection
+##### 🔹 `cart` Subcollection
 
 Located inside: `users/{userId}/cart`
 
@@ -141,7 +168,7 @@ Each document represents a recipe item the user wants to purchase.
 
 Used to build a shopping cart before placing an order.
 
-###### 🔹 `orders` Subcollection
+##### 🔹 `orders` Subcollection
 
 Located inside: `users/{userId}/orders`
 
@@ -156,7 +183,7 @@ Each document represents a full user order.
 
 Orders track a user's checkout history and delivery schedule.
 
-##### 🔹 `recipes` Collection *(Optional)*
+#### 🔹 `recipes` Collection *(Optional)*
 
 Optionally stores basic recipe data fetched from an external API.
 
@@ -164,7 +191,7 @@ Optionally stores basic recipe data fetched from an external API.
 
 This enables local caching or advanced features like search/sort/filter.
 
-### 🔹 `comments` Subcollection
+##### 🔹 `comments` Subcollection
 
 Located inside: `recipes/{recipeId}/comments`
 
@@ -178,7 +205,7 @@ Each document is a user review on a specific recipe.
 
 This supports community feedback and rating systems for recipes.
 
-### 🔹 `recipeDetails` Collection *(Optional)*
+##### 🔹 `recipeDetails` Collection *(Optional)*
 
 If detailed recipe info needs to be stored persistently:
 
@@ -191,7 +218,7 @@ If detailed recipe info needs to be stored persistently:
 Useful for enabling offline access or analytics.
 
 ---
-#### 📁 Folder Structure
+## 📁 Folder Structure
 Below is the folder structure of the **Foodie Genie** project:
 
 ```plaintext
@@ -250,18 +277,18 @@ Below is the folder structure of the **Foodie Genie** project:
 ```
 ---
 
-### 🤝 Contributing
+## 🤝 Contributing
 Fork the repository.
 Create a new branch (git checkout -b feature/your-feature).
 Commit your changes (git commit -am 'Add new feature').
 Push and submit a PR 
 
 ---
-### 📜 License
+## 📜 License
 This project is licensed under the MIT License - see the LICENSE file for details.
 
 ---
-### 👥 Author
+## 👥 Author
 Developed for university project by:
 
 - Yiling Chen
