@@ -71,30 +71,46 @@ Supports user authentication with two methods:
 Upon successful login or sign-up, users are redirected to the home screen. Basic validation and error handling are included.
 **Related File:** `LoginScreen.kt`
 <p float="left">
-  <img src="./screenshots/signin.png" height="600px" style="margin: 5px;"/>
-  <img src="./screenshots/signup.png" height="600px" style="margin: 5px;"/>
+  <img src="./screenshots/signin.png" height="660px" style="margin: 14px;"/>
+  <img src="./screenshots/signup.png" height="660px" style="margin: 14px;"/>
 </p>
 
 
 ### 🏠 Recipes Page (Home Page)
 Displays a list of recipes with a search bar and diet-based chips filter.
 **Related File:** `RecipeScreen.kt`
+<p float="left">
+  <img src="./screenshots/home.png" height="660px" style="margin: 14px;"/>
+</p>
 
 ### 🔍 Recipe Detail Page
 Browse recipes from a remote API and view detailed ingredients, instructions, and images.
 **Related File:** `RecipeDetailScreen.kt`
+<p float="left">
+  <img src="./screenshots/detail1.png" height="660px" style="margin: 14px;"/>
+  <img src="./screenshots/detail2.png" height="660px" style="margin: 14px;"/>
+</p>
 
 ### ❤️ Favorites Page
 View your favorited recipes and navigate back to their details.
 **Related File:** `FavoriteScreen.kt`
+<p float="left">
+  <img src="./screenshots/favorites.png" height="660px" style="margin: 14px;"/>
+</p>
 
 ### 🛒 Cart Page
 See selected recipes, adjust quantities, remove items, and proceed to checkout.
 **Related File:** `CartScreen.kt`
+<p float="left">
+  <img src="./screenshots/cart.png" height="660px" style="margin: 14px;"/>
+</p>
 
 ### 💳 Checkout Page
 Final step in the ordering process. Users enter delivery details (address, date, time slot, phone number, optional note) and place an order.
 **Related File:** `CheckoutScreen.kt`
+<p float="left">
+  <img src="./screenshots/checkout.png" height="660px" style="margin: 14px;"/>
+</p>
 
 ### 🧾 Orders Page
 - **For Users:** View your own order history, including status and order details.
@@ -104,18 +120,38 @@ Final step in the ordering process. Users enter delivery details (address, date,
 - `UserOrderScreen.kt`
 - `AdminOrderScreen.kt`
 - `OrderScreen.kt`
+#### 👤 User View
+<p float="left">
+  <img src="./screenshots/user.png" height="660px" style="margin: 14px;" />
+</p>
+
+#### 🛠️ Admin View
+<p float="left">
+  <img src="./screenshots/admin1.png" height="660px" style="margin: 14px;" />
+  <img src="./screenshots/admin2.png" height="660px" style="margin: 14px;" />
+</p>
 
 ### 👤 Profile Page
 Edit user information including name, address, gender, and upload a profile picture.
 **Related File:** `ProfileScreen.kt`
+<p float="left">
+  <img src="./screenshots/profile1.png" height="660px" style="margin: 14px;"/>
+  <img src="./screenshots/profile2.png" height="660px" style="margin: 14px;"/>
+</p>
 
 ### ℹ️ Info Page
 Static screen for showing terms of service, privacy policy, or app information.
-**Related File:** `LoginScreen.kt`
+**Related File:** `InfoScreen.kt`
+<p float="left">
+  <img src="./screenshots/info.png" height="660px" style="margin: 14px;"/>
+</p>
 
 ### ⚙️ Settings Page
 Basic settings and logout functionality.
 **Related File:** `SettingsScreen.kt`
+<p float="left">
+  <img src="./screenshots/logout.png" height="660px" style="margin: 14px;"/>
+</p>
 
 ### 🛠 Error Page
 Displays UI when an error occurs (e.g., network failure).
