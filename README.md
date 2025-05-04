@@ -153,13 +153,6 @@ Basic settings and logout functionality.
   <img src="./screenshots/logout.png" height="660px" style="margin: 14px;"/>
 </p>
 
-### 🛠 Error Page
-Displays UI when an error occurs (e.g., network failure).
-**Related File:** `ErrorScreen.kt`
-
-### 🔄 Loading Page
-A loading indicator shown during data fetching or processing.
-**Related File:** `LoadingScreen.kt`
 
 ## 🧪 Technologies Used
 | Technology                        | Description                                                                                                 |
