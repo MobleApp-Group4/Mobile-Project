@@ -6,7 +6,6 @@ FoodieGenie is a modern recipe discovery and shopping assistant app built for An
 - [👨🏻‍🏫 Introduction](#-introduction)
 - [🧪 Features](#-features)
 - [🖼️ App UI Preview](#-app-ui-preview)
-- [📚 Pages Overview](#-pages-overview)
     - [🔐 Sign In & Sign Up Page](#sign-in--sign-up-page)
     - [🏠 Home Page](#-recipes-page-home-page)
     - [🔍 Recipe Detail Page](#-recipe-detail-page)
@@ -16,7 +15,7 @@ FoodieGenie is a modern recipe discovery and shopping assistant app built for An
     - [🧾 Orders Page](#-orders-page)
     - [👤 Profile Page](#-profile-page)
     - [ℹ️ Info Page](#ℹ-info-page)
-    - [⚙️ Settings Page](#-settings-page)
+    - [🔓 Logout](#-logout)
 - 🧩 [Technologies Used](#-technologies-used)
 - 🔥 [Firebase Setup & Configuration](#-firebase-setup-and-configuration)
 - 📂 [Folder Structure](#-folder-structure)
@@ -60,9 +59,9 @@ FoodieGenie is a modern recipe discovery and shopping assistant app built for An
 - 🌙 Dark mode support
 
 ## 🖼️ App UI Preview
-Add screenshots here for key pages like Home, Cart, Profile, Orders
+### ℹ️Note
 
-## 📚 Pages Overview
+For full functionality breakdowns of each page, refer to future prompts. Below are screen previews.
 
 ### 🔐Sign In & Sign Up Page
 Supports user authentication with two methods:
@@ -146,9 +145,11 @@ Static screen for showing terms of service, privacy policy, or app information.
   <img src="./screenshots/info.png" height="660px" style="margin: 14px;"/>
 </p>
 
-### ⚙️ Settings Page
-Basic settings and logout functionality.
-**Related File:** `SettingsScreen.kt`
+### 🔓 Logout
+Logout is accessed via the dropdown menu in the top-right TopBar.
+Upon clicking Logout, users are prompted with a confirmation dialog. If confirmed, they are signed out via Firebase Authentication.
+
+**Related File:** `TopBar.kt`
 <p float="left">
   <img src="./screenshots/logout.png" height="660px" style="margin: 14px;"/>
 </p>
