@@ -149,7 +149,7 @@ Static screen for showing terms of service, privacy policy, or app information.
 Logout is accessed via the dropdown menu in the top-right TopBar.
 Upon clicking Logout, users are prompted with a confirmation dialog. If confirmed, they are signed out via Firebase Authentication.
 
-Related File: TopBar.kt
+**Related File:** `TopBar.kt`
 <p float="left">
   <img src="./screenshots/logout.png" height="660px" style="margin: 14px;"/>
 </p>
